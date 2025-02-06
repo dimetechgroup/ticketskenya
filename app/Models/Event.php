@@ -16,7 +16,7 @@ class Event extends Model
         'name',
         'description',
         'venue',
-        'location',
+        'location', // 'online', 'offline'
         'start_date',
         'end_date',
         'status', // 'draft', 'pending', 'approved', 'cancelled', 'completed'
@@ -33,6 +33,10 @@ class Event extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+    public function tickets(): HasMany
+    {
+        return $this->hasMany(Ticket::class);
     }
 
     public function orders(): HasMany

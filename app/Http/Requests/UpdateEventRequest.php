@@ -22,7 +22,20 @@ class UpdateEventRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'venue' => 'required|string|max:255',
+            'location' => 'required|in:online,offline',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            // 'status' => 'required|in:draft,pending,approved,cancelled,completed',
+            'image' => 'nullable|image|max:2048',
+            'meeting_link' => 'nullable|url',
+            'currency' => 'required|string|max:3',
+            'contact_number' => 'required|string|max:15',
+            'contact_email' => 'required|email|max:255',
+            'processing_fee' => 'nullable|numeric|min:0',
+            'is_private' => 'required|boolean',
         ];
     }
 }

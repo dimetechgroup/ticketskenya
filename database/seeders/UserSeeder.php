@@ -18,7 +18,8 @@ class UserSeeder extends Seeder
             'email' => 'admin@ticketkenya.com',
             'password' => bcrypt('Dimetech@2025'),
             'role' => 'admin',
-            'phone_number' => '254708178500'
+            'phone_number' => '254708178500',
+            'email_verified_at' => now(),
 
         ];
 
