@@ -17,16 +17,17 @@ class Event extends Model
         'description',
         'venue',
         'location',
-        'event_date',
+        'start_date',
+        'end_date',
         'status', // 'draft', 'pending', 'approved', 'cancelled', 'completed'
         'image',
         'user_id',
-
         'meeting_link',
         'currency',
         'contact_number',
         'contact_email',
         'processing_fee',
+        'is_private',
     ];
 
     public function user(): BelongsTo

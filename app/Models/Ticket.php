@@ -13,7 +13,7 @@ class Ticket extends Model
     protected $fillable = [
         'event_id',
         'name',
-        'price',
+        'price', // Price of the ticket.: if price is 0, then it's free.
         'discount',
         'currency',
         'available_qty', // Number of tickets available.

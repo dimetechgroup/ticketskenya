@@ -17,7 +17,8 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->string('venue')->nullable();
             $table->string('location')->nullable();
-            $table->dateTime('event_date');
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
             $table->enum('status', ['draft', 'pending', 'approved', 'cancelled', 'completed'])->default('draft');
             $table->string('image')->nullable();
             $table->foreignId('user_id')->constrained();
@@ -26,6 +27,7 @@ return new class extends Migration
             $table->string('contact_number')->nullable();
             $table->string('contact_email')->nullable();
             $table->decimal('processing_fee', 10, 2)->default(0);
+            $table->boolean('is_private')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });
