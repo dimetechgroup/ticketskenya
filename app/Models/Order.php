@@ -12,12 +12,13 @@ class Order extends Model
     /** @use HasFactory<\Database\Factories\OrderFactory> */
     use HasFactory;
     protected $fillable = [
+        'order_number',
         'user_id', // User who placed the order.
         'event_id', // Event for which tickets were purchased.
         'total_amount',  //Total amount paid for the order.
         'currency', // Currency used for payment. : KES, USD, EUR
         'payment_status', // 'pending', 'successful', 'failed', 'refunded'
-        'pay_unique_code', // Payment unique code.
+        'paystack_reference', // Payment unique code.
     ];
 
     public function user(): BelongsTo

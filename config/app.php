@@ -28,6 +28,17 @@ return [
 
     'env' => env('APP_ENV', 'production'),
 
+    'paystack' => [
+        'public_key' => env('PAYSTACK_PUBLIC_KEY'),
+        'secret_key' => env('PAYSTACK_SECRET_KEY'),
+
+    ],
+
+    'crossgate' => [
+        'profile_code' => env('CROSSGATE_PROFILE_CODE'),
+        'api_key' => env('CROSSGATE_API_KEY'),
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode
