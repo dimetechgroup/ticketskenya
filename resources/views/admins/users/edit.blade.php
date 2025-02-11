@@ -20,27 +20,31 @@
             <div class="row">
                 <div class="col-md-8 mx-auto">
                     <div class="card shadow-sm">
-                        <div class="card-header bg-primary text-white">
+                        <div class="card-header bg-success text-white">
                             <h4 class="card-title mb-0 text-white font-weight-bold">User Details</h4>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('users.store') }}" method="POST" class="row"
+                            <form action="{{ route('users.update', $user->id) }}" method="POST" class="row"
                                 enctype="multipart/form-data">
                                 @csrf
+                                @method('PUT')
+
                                 <!-- User Name, password, email -->
                                 <div class="form-group col-md-6">
                                     <label class="required">User Name</label>
                                     <input type="text" name="name"
                                         class="form-control @error('name') is-invalid @enderror"
-                                        placeholder="Enter User name" value="{{ old('name') }}">
+                                        placeholder="{{ $user->name ?? 'Enter User Name' }}" value="{{ old('name') }}">
                                     @error('name')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label class="required">Password</label>
-                                    <input name="password" class="form-control @error('password') is-invalid @enderror" rows="3"
-                                        placeholder="Enter User details">{{ old('password') }}</input>
+                                    <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" rows="3"
+                                        placeholder="Enter Password" value="{{ old('password') }}">{{ old('password') }}
+
+                                    </input>
                                     @error('password')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
@@ -49,19 +53,19 @@
                                 <!-- Contact Number, Email, Image Upload -->
                                 <div class="form-group col-md-6">
                                     <label>Contact Number</label>
-                                    <input type="text" name="contact_number" class="form-control"
-                                        placeholder="Enter contact number" value="{{ old('contact_number') }}">
+                                    <input type="text" name="phone_number" class="form-control"
+                                        placeholder="Enter contact number" value="{{ $user->phone_number }}">
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label>Contact Email</label>
-                                    <input type="email" name="contact_email" class="form-control"
-                                        placeholder="Enter contact email" value="{{ old('contact_email') }}">
+                                    <input type="email" name="email" class="form-control"
+                                        placeholder="{{$user->email}}" value="{{ old('email') }}">
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label>User Image</label>
-                                    <input type="file" name="image" class="form-control-file">
+                                    <input type="file" name="image" class="form-control-file" value="{{ old('image') }}">
                                 </div>
 
 

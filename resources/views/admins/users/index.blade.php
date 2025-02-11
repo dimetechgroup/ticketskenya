@@ -6,7 +6,7 @@
 @section('content')
     <div class="content">
         <div class="container-fluid">
-            <h4 class="page-title">User</h4>
+            <h4 class="page-title">Users List</h4>
 
 
             <div class="row">
@@ -55,9 +55,11 @@
                                                 </td>
                                                 <td>
                                                     {{ $user->phone_number }}
+                                                </td>
                                                 <td>
                                                     {{ $user->role }}
                                                 </td>
+                                                <td>
                                                     <a href="{{ route('users.edit', $user->id) }}"
                                                         class="btn btn-warning btn-round text-white">
                                                         <i class="fa fa-edit">Edit User</i>
