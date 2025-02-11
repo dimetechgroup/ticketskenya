@@ -44,6 +44,12 @@
                     <p>Events</p>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{ route('users.index') }}">
+                    <i class="la la-users"></i>
+                    <p>Users</p>
+                </a>
+            </li>
 
 
         </ul>
