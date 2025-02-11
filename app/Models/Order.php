@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Order extends Model
 {
@@ -13,7 +14,6 @@ class Order extends Model
     use HasFactory;
     protected $fillable = [
         'order_number',
-        'user_id', // User who placed the order.
         'event_id', // Event for which tickets were purchased.
         'total_amount',  //Total amount paid for the order.
         'currency', // Currency used for payment. : KES, USD, EUR
@@ -21,14 +21,14 @@ class Order extends Model
         'paystack_reference', // Payment unique code.
     ];
 
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
+    }
+
+    public function payment(): HasOne
+    {
+        return $this->hasOne(Payment::class);
     }
 
     public function orderItems(): HasMany
