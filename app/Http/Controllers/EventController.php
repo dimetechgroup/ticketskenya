@@ -6,66 +6,79 @@ use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Models\Event;
 use App\Models\User;
+use App\Utilities\Constants;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $user = User::find(Auth::id());
-        //if the logged in user is an admin, show all events else show only the events created by the logged in user
-        if ($user->isAdmin()) {
-            $events = Event::query()->latest()->paginate(10);
-        } else {
-            $events = $user->events()->latest()->paginate(10);
-        }
+        $user = Auth::user();
 
-        $statistics = [
+
+        // Base query: Admin sees all, organizer sees their own events
+        $eventQuery = Event::query()->when(!$user->isAdmin(), fn($q) => $q->where('user_id', $user->id));
+
+        // Fetch paginated events (AFTER setting the base query)
+        $events = $eventQuery->latest()->paginate(10);
+
+
+        // Fetch statistics in a single query
+        $eventCounts = $eventQuery
+            ->selectRaw("status, COUNT(*) as count")
+            ->groupBy('status')
+            ->pluck('count', 'status');
+
+        // Define possible statuses and set default count (0) if missing
+        $statuses = ['draft', 'pending', 'approved', 'cancelled', 'completed'];
+
+        $statistics = collect([
             [
-                'color' => 'card-warning', // Yellow/Orange for Drafts
-                'icon' => 'la la-users',
-                'category' => 'Drafts Events',
-                'route' => route('events.index', ['status' => 'draft']),
-                'count' => 1294
+                'color'    => 'card-warning',
+                'icon'     => 'la la-edit',
+                'category' => 'Draft Events',
+                'status'   => 'draft',
             ],
             [
-                'color' => 'card-info', // Blue for Pending
-                'icon' => 'la la-bar-chart',
+                'color'    => 'card-info',
+                'icon'     => 'la la-hourglass-half',
                 'category' => 'Pending Events',
-                'route' => route('events.index', ['status' => 'pending']),
-                'count' => 1345
+                'status'   => 'pending',
             ],
             [
-                'color' => 'card-success', // Green for Approved
-                'icon' => 'la la-newspaper-o',
+                'color'    => 'card-success',
+                'icon'     => 'la la-check',
                 'category' => 'Approved Events',
-                'route' => route('events.index', ['status' => 'approved']),
-                'count' => 1303
+                'status'   => 'approved',
             ],
             [
-                'color' => 'card-danger', // Red for Cancelled
-                'icon' => 'la la-check-circle',
+                'color'    => 'card-danger',
+                'icon'     => 'la la-ban',
                 'category' => 'Cancelled Events',
-                'route' => route('events.index', ['status' => 'cancelled']),
-                'count' => 576
+                'status'   => 'cancelled',
             ],
             [
-                'color' => 'card-success', // Green for Completed
-                'icon' => 'la la-check-circle',
+                'color'    => 'card-success',
+                'icon'     => 'la la-calendar',
                 'category' => 'Completed Events',
-                'route' => route('events.index', ['status' => 'completed']),
-                'count' => 576
-            ]
-        ];
+                'status'   => 'completed',
+            ],
+        ])->map(function ($stat) use ($eventCounts) {
+            return array_merge($stat, [
+                'route' => route('events.index', ['status' => $stat['status']]),
+                'count' => $eventCounts[$stat['status']] ?? 0, // Default to 0 if missing
+            ]);
+        });
+
 
         return view('admins.events.index', compact('events', 'statistics'));
     }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -79,10 +92,10 @@ class EventController extends Controller
      */
     public function store(StoreEventRequest $request)
     {
-        $user = User::find(Auth::id());
-        $data = $request->validated();
-        $data['status'] = 'pending';
-        $data['image'] = Storage::disk(config('filesystems.default'))->put('events', $request->file('image'));
+        $user           = User::find(Auth::id());
+        $data           = $request->validated();
+        $data['status'] = Constants::EVENT_STATUS_PENDING;
+        $data['image']  = Storage::disk(config('filesystems.default'))->put('events', $request->file('image'));
 
         $user->events()->create($data);
 

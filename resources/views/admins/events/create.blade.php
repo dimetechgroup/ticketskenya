@@ -40,6 +40,20 @@
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
+                                {{-- select input to show currency  options USD, KES default KES --}}
+                                <div class="form-group col-md-6">
+                                    <label class="required">Currency</label>
+                                    <select name="currency" class="form-control @error('currency') is-invalid @enderror">
+                                        <option value="KES" {{ old('currency') == 'KES' ? 'selected' : '' }}> KES
+                                        </option>
+                                        <option value="USD" {{ old('currency') == 'USD' ? 'selected' : '' }}>USD</option>
+                                    </select>
+                                    @error('currency')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+
+
                                 <div class="form-group col-md-6">
                                     <label class="required">Venue</label>
                                     <input type="text" name="venue"
@@ -49,23 +63,12 @@
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
-
-                                <div class="form-group col-md-12">
-                                    <label class="required">Description</label>
-                                    <textarea name="description" class="form-control @error('description') is-invalid @enderror" rows="3"
-                                        placeholder="Enter event details">{{ old('description') }}</textarea>
-                                    @error('description')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
-
-
-
                                 <!-- Location Type and Meeting Link (conditional visibility for online) -->
                                 <div class="form-group col-md-6">
                                     <label class="required">Location</label>
                                     <select name="location" class="form-control @error('location') is-invalid @enderror">
-                                        <option value="offline" {{ old('location') == 'offline' ? 'selected' : '' }}>Offline
+                                        <option value="offline" {{ old('location') == 'offline' ? 'selected' : '' }}>
+                                            Offline
                                         </option>
                                         <option value="online" {{ old('location') == 'online' ? 'selected' : '' }}>Online
                                         </option>
@@ -75,11 +78,28 @@
                                     @enderror
                                 </div>
 
-                                <div class="form-group d-none col-md-6" id="meeting-link-group">
+                                <div class="form-group d-none col-md-12" id="meeting-link-group">
                                     <label>Meeting Link</label>
-                                    <input type="url" name="meeting_link" class="form-control"
+                                    <input type="url" name="meeting_link"
+                                        class="form-control @error('meeting_link') is-invalid @enderror"
                                         placeholder="Enter meeting link" value="{{ old('meeting_link') }}">
+                                    @error('meeting_link')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
+
+
+                                <div class="form-group col-md-12">
+                                    <label class="required">Description</label>
+                                    <textarea name="description" class="form-control @error('description') is-invalid @enderror" rows="3"
+                                        id="editor" placeholder="Enter event details">{{ old('description') }}</textarea>
+                                    @error('description')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+
+
+
 
                                 <!-- Start Date and End Date -->
                                 <div class="row col-md-12">
@@ -110,30 +130,52 @@
 
                                 <!-- Contact Number, Email, Image Upload -->
                                 <div class="form-group col-md-6">
-                                    <label>Contact Number</label>
-                                    <input type="text" name="contact_number" class="form-control"
+                                    <label class="required">Contact Number</label>
+                                    <input type="text" name="contact_number"
+                                        class="form-control  @error('contact_number') is-invalid @enderror"
                                         placeholder="Enter contact number" value="{{ old('contact_number') }}">
+                                    @error('contact_number')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
 
                                 <div class="form-group col-md-6">
-                                    <label>Contact Email</label>
-                                    <input type="email" name="contact_email" class="form-control"
+                                    <label class="required">Contact Email</label>
+                                    <input type="email" name="contact_email"
+                                        class="form-control  @error('contact_email') is-invalid @enderror"
                                         placeholder="Enter contact email" value="{{ old('contact_email') }}">
+                                    @error('contact_email')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
 
                                 <div class="form-group col-md-6">
-                                    <label>Event Image</label>
-                                    <input type="file" name="image" class="form-control-file">
+                                    <label class="required">Event Image</label>
+                                    <input type="file" name="image"
+                                        class="form-control-file  @error('image') is-invalid @enderror">
+                                    @error('image')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
 
                                 <!-- Private Event Toggle -->
-                                <div class="form-group col-md-6">
-                                    <label>Is Private?</label>
-                                    <input type="checkbox" name="is_private" class="ml-2">
-                                </div>
 
-                                <!-- Submit Button -->
-                                <button type="submit" class="btn btn-success">Create Event</button>
+                                <div class="form-check col-md-6">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input   @error('is_private') is-invalid @enderror"
+                                            name="is_private" type="checkbox">
+                                        <span class="form-check-sign">Is Private Event ?</span>
+                                    </label>
+                                    @error('is_private')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                <div
+                                    class="form-group col-md-6 mt-2 offset-md-3  rounded d-flex align-items-center justify-content-center">
+
+                                    <!-- Submit Button -->
+                                    <button type="submit" class="btn btn-success btn-lg">Create Event</button>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -145,6 +187,8 @@
 
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/34.1.0/classic/ckeditor.js"></script>
+
     <script>
         $(document).ready(function() {
             $('.datepicker').datepicker({
@@ -152,11 +196,22 @@
                 autoclose: true,
                 todayHighlight: true
             });
+            ClassicEditor
+                .create(document.querySelector('#editor'))
+                .catch(error => {
+                    console.error(error);
+                });
 
             // Show meeting link field if online is selected
             $('select[name="location"]').on('change', function() {
                 $('#meeting-link-group').toggleClass('d-none', $(this).val() !== 'online');
             });
+            //  when page is complwtely loaded check if location is online and show meeting link
+            $('#meeting-link-group').toggleClass('d-none', $('select[name="location"]').val() !== 'online');
+
+
+
+
         });
     </script>
 @endsection

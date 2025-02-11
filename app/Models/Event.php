@@ -12,6 +12,8 @@ class Event extends Model
 {
     /** @use HasFactory<\Database\Factories\EventFactory> */
     use HasFactory, SoftDeletes;
+
+
     protected $fillable = [
         'name',
         'description',
@@ -19,7 +21,7 @@ class Event extends Model
         'location', // 'online', 'offline'
         'start_date',
         'end_date',
-        'status', // 'draft', 'pending', 'approved', 'cancelled', 'completed'
+        'status', //  'pending', 'approved', 'cancelled', 'completed'
         'image',
         'user_id',
         'meeting_link',
@@ -28,6 +30,13 @@ class Event extends Model
         'contact_email',
         'processing_fee',
         'is_private',
+    ];
+
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date'   => 'datetime',
+        'is_private' => 'boolean',
+        'status'     => 'string',
     ];
 
     public function user(): BelongsTo

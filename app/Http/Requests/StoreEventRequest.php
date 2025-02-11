@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Utilities\Constants;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,14 +30,17 @@ class StoreEventRequest extends FormRequest
             'location' => 'required|in:online,offline',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
-            // 'status' => 'required|in:draft,pending,approved,cancelled,completed',
             'image' => 'required|image|max:2048',
-            'meeting_link' => 'nullable|url',
-            'currency' => 'required|string|max:3',
+            'meeting_link' => [
+                'required_if:location,online',
+                'nullable',
+                'url',
+                'max:255',
+            ],
+            'currency' => 'required|string|max:3|in:' . implode(',', [Constants::CURRENCY_KES, Constants::CURRENCY_USD]),
             'contact_number' => 'required|string|max:15',
             'contact_email' => 'required|email|max:255',
-            'processing_fee' => 'nullable|numeric|min:0',
-            'is_private' => 'required|boolean',
+            'is_private' => 'nullable|boolean',
         ];
     }
 }

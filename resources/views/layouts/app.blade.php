@@ -18,6 +18,7 @@
 </head>
 
 <body>
+    <x-messages />
     <div class="wrapper">
         @include('includes.admin.main-header')
         @include('includes.admin.mainSidebar')

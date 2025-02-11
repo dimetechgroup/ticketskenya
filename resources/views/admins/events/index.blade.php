@@ -1,3 +1,4 @@
+{{-- resources/views/admins/events/index.blade.php --}}
 @extends('layouts.app')
 
 @section('styles')
@@ -22,7 +23,7 @@
                             <h4 class="card-title">Events</h4>
 
                             <a href="{{ route('events.create') }}" class="btn btn-primary btn-round text-white pull-right">
-                                <i class="fa fa-plus"></i>
+                                <i class="la la-plus"></i>
                                 Add Event
                             </a>
 
@@ -31,23 +32,22 @@
                             <div class="table-responsive">
                                 <table class="table table-striped">
                                     <thead class=" text-primary">
-                                        <th>
-                                            ID
-                                        </th>
+
                                         <th>
                                             Name
                                         </th>
                                         <th>
-                                            Description
+                                            Status
                                         </th>
+
                                         <th>
                                             Location
                                         </th>
                                         <th>
-                                            Date
+                                            Start Date
                                         </th>
                                         <th>
-                                            Time
+                                            End Date
                                         </th>
                                         <th>
                                             Actions
@@ -56,41 +56,49 @@
                                     <tbody>
                                         @foreach ($events as $event)
                                             <tr>
-                                                <td>
-                                                    {{ $event->id }}
-                                                </td>
+
                                                 <td>
                                                     {{ $event->name }}
                                                 </td>
                                                 <td>
-                                                    {{ $event->description }}
+                                                    <x-admins.events.status-badge :status="$event->status" />
+
+
                                                 </td>
+
                                                 <td>
                                                     {{ $event->location }}
                                                 </td>
                                                 <td>
-                                                    {{ $event->date }}
+                                                    {{ $event->start_date->format('d M, Y H:s') }}
                                                 </td>
                                                 <td>
-                                                    {{ $event->time }}
+                                                    {{ $event->end_date->format('d M, Y H:s') }}
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('events.edit', $event->id) }}"
-                                                        class="btn btn-warning btn-round text-white">
-                                                        <i class="fa fa-edit"></i>
+                                                    <a href="{{ route('events.show', $event->id) }}"
+                                                        class="btn btn-info btn-round text-white">
+                                                        <i class="la la-eye"></i>
                                                     </a>
                                                     <form action="{{ route('events.destroy', $event->id) }}" method="POST"
                                                         style="display: inline-block">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger btn-round">
-                                                            <i class="fa fa-trash"></i>
+                                                            <i class="la la-trash"></i>
                                                         </button>
                                                     </form>
                                                 </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="5" class= "">
+                                                {{ $events->links('pagination::bootstrap-5') }}
+                                            </td>
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </div>
                         </div>
