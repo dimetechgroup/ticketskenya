@@ -1,0 +1,11 @@
+.card-stats {
+    text-decoration: none;
+}
+
+.card-stats:hover {
+    text-decoration: none;
+    font-weight: 900;
+    border: 1px solid #f0f0f0;
+    border-radius: 10px;
+    background-color: #7399d1;
+}

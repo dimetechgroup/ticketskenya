@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="{{ asset('admin_assets/css/ready.css') }}">
     <link rel="stylesheet" href="{{ asset('admin_assets/css/demo.css') }}">
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.ts'])
+    @vite(['resources/css/app.css', 'resources/css/admin.css', 'resources/js/app.ts'])
     @yield('styles')
 </head>
 
@@ -22,7 +22,10 @@
         @include('includes.admin.main-header')
         @include('includes.admin.mainSidebar')
         {{-- Main content --}}
-        @yield('content')
+        <div class="main-panel">
+            @yield('content')
+            @include('includes.admin.main-footer')
+        </div>
     </div>
     </div>
 

@@ -25,7 +25,45 @@ class EventController extends Controller
             $events = $user->events()->latest()->paginate(10);
         }
 
-        return view('events.index', compact('events'));
+        $statistics = [
+            [
+                'color' => 'card-warning', // Yellow/Orange for Drafts
+                'icon' => 'la la-users',
+                'category' => 'Drafts Events',
+                'route' => route('events.index', ['status' => 'draft']),
+                'count' => 1294
+            ],
+            [
+                'color' => 'card-info', // Blue for Pending
+                'icon' => 'la la-bar-chart',
+                'category' => 'Pending Events',
+                'route' => route('events.index', ['status' => 'pending']),
+                'count' => 1345
+            ],
+            [
+                'color' => 'card-success', // Green for Approved
+                'icon' => 'la la-newspaper-o',
+                'category' => 'Approved Events',
+                'route' => route('events.index', ['status' => 'approved']),
+                'count' => 1303
+            ],
+            [
+                'color' => 'card-danger', // Red for Cancelled
+                'icon' => 'la la-check-circle',
+                'category' => 'Cancelled Events',
+                'route' => route('events.index', ['status' => 'cancelled']),
+                'count' => 576
+            ],
+            [
+                'color' => 'card-success', // Green for Completed
+                'icon' => 'la la-check-circle',
+                'category' => 'Completed Events',
+                'route' => route('events.index', ['status' => 'completed']),
+                'count' => 576
+            ]
+        ];
+
+        return view('admins.events.index', compact('events', 'statistics'));
     }
 
     /**
@@ -33,7 +71,7 @@ class EventController extends Controller
      */
     public function create()
     {
-        return view('events.create');
+        return view('admins.events.create');
     }
 
     /**
