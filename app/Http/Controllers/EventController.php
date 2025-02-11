@@ -110,7 +110,7 @@ class EventController extends Controller
         $event->load(['user:id,name,email,phone_number,role', 'tickets', 'orders'])
             ->loadCount('tickets', 'orders');
 
-        return view('events.show', compact('event'));
+        return view('admins.events.show', compact('event'));
     }
 
     /**
