@@ -75,7 +75,24 @@
         <!-- Events Table -->
         <div class="card mt-4 shadow">
             <div class="card-body">
-                <h5 class="card-title">Event List</h5>
+                <h5 class="card-head d-flex justify-content-between align-items-center">
+                    <div>
+                        Events
+                        <a href="{{ route('events.create') }}" class="btn btn-primary">
+                            <i class="la la-plus"></i> Add New Event
+                        </a>
+                    </div>
+
+                    <div>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search...">
+                            <button class="btn btn-primary">
+                                <i class="la la-search"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </h5>
 
                 <div class="table-responsive">
                     <table class="table table-hover align-middle">

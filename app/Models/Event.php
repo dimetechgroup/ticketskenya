@@ -39,6 +39,12 @@ class Event extends Model
         'status'     => 'string',
     ];
 
+    // return event image url
+    public function getImageUrlAttribute(): string
+    {
+        return $this->image ? asset('storage/' . $this->image) : asset('images/event-default.png');
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

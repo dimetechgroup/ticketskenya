@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('location')->nullable();
             $table->dateTime('start_date');
             $table->dateTime('end_date');
-            $table->enum('status', ['pending', 'approved', 'cancelled', 'completed'])->default('draft');
+            $table->enum('status', ['pending', 'approved', 'cancelled', 'completed'])->default('pending');
             $table->string('image')->nullable();
             $table->foreignId('user_id')->constrained();
             $table->string('meeting_link')->nullable();

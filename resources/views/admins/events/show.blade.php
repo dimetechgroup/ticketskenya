@@ -1,12 +1,31 @@
-{{-- resources/views/admins/events/show.blade.php --}}
 @extends('layouts.app')
 
 @section('styles')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.css">
     <style>
-        .stat-card {
-            border-radius: 10px;
-            padding: 20px;
-            color: white;
+        .card-statistics {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .card-statistics h5 {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .card-statistics p {
+            font-size: 14px;
+            color: #6c757d;
+        }
+
+        .event-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
         }
     </style>
 @endsection
@@ -14,71 +33,100 @@
 @section('content')
     <div class="content">
         <div class="container-fluid">
-            <h4 class="page-title">Event Details</h4>
-            <div class="row">
-                {{-- showing event statis here --}}
-                <div class="card stat-card bg-primary col-md-4">
-                    <h5><i class="la la-ticket"></i> Total Tickets</h5>
-                    <h3>{{ $event->tickets_count }}</h3>
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="page-title">Event Details</h4>
+                <div>
+                    <a href="{{ route('events.edit', $event->id) }}" class="btn btn-primary">Edit</a>
+                    <form action="{{ route('events.destroy', $event->id) }}" method="POST" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
                 </div>
-                <div class="card stat-card bg-success col-md-4">
-                    <h5><i class="la la-shopping-cart"></i> Total Orders</h5>
-                    <h3>{{ $event->orders_count }}</h3>
-                </div>
-                <div class="card stat-card bg-warning col-md-4">
-                    <h5><i class="la la-money"></i> Total Revenue</h5>
-                    <h3>Ksh {{ number_format($event->orders->sum('amount'), 2) }}</h3>
-                </div>
-
             </div>
 
+            <!-- Event Overview Section -->
             <div class="row">
-                <div class="col-md-12">
-                    <div class="card shadow">
+                <div class="col-md-8">
+                    <div class="card">
                         <div class="card-body">
-                            <h3 class="mb-3">{{ $event->name }}</h3>
-                            <p><strong>Date:</strong> {{ $event->date }}</p>
-                            <p><strong>Location:</strong> {{ $event->location }}</p>
-                            <p><strong>Organizer:</strong> {{ $event->user->name }} ({{ $event->user->email }})</p>
-                            <p><strong>Status:</strong>
-                                <span class="badge badge-{{ $event->status == 'approved' ? 'success' : 'warning' }}">
-                                    {{ ucfirst($event->status) }}
-                                </span>
+                            <img src="{{ asset($event->image_url) }}" class="img-fluid img-thumbnail event-image"
+                                alt="Event Image">
+                            <h3 class="mt-3">{{ $event->name }}</h3>
+                            <p class="text-muted">{!! $event->description !!}</p>
+                            <p><strong>Venue:</strong> {{ $event->venue }} ({{ ucfirst($event->location) }})</p>
+                            <p><strong>Start Date:</strong> {{ $event->start_date->format('M d, Y h:i A') }}</p>
+                            <p><strong>End Date:</strong> {{ $event->end_date->format('M d, Y h:i A') }}</p>
+                            <p><strong>Contact:</strong> {{ $event->contact_email }} | {{ $event->contact_number }}</p>
+                            <p><strong>Status:</strong> <span
+                                    class="badge bg-{{ $event->status == 'approved' ? 'success' : 'warning' }}">{{ ucfirst($event->status) }}</span>
                             </p>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12">
-                    <div class="card shadow">
-                        <div class="card-header">
-                            <h5>Available Tickets</h5>
+
+                <!-- Statistics Panel -->
+                <div class="col-md-4">
+                    <div class="card p-3">
+                        <h5 class="text-center">Event Statistics</h5>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="card-statistics">
+                                    <h5>{{ $ticketsSold }}</h5>
+                                    <p>Tickets Sold</p>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="card-statistics">
+                                    <h5>{{ $event->tickets->sum('available_qty') - $ticketsSold }}</h5>
+                                    <p>Tickets Left</p>
+                                </div>
+                            </div>
+                            <div class="col-6 mt-3">
+                                <div class="card-statistics">
+                                    <h5>{{ $attendeesCheckedIn }}</h5>
+                                    <p>Checked-in</p>
+                                </div>
+                            </div>
+                            <div class="col-6 mt-3">
+                                <div class="card-statistics">
+                                    <h5>{{ 0 - $attendeesCheckedIn }}</h5>
+                                    <p>Pending Check-ins</p>
+                                </div>
+                            </div>
+                            <div class="col-12 mt-3">
+                                <div class="card-statistics">
+                                    <h5>${{ number_format($totalRevenue, 2) }}</h5>
+                                    <p>Total Revenue</p>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ticket and Order Details -->
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="card">
                         <div class="card-body">
-                            <table class="table table-hover">
+                            <h5>Tickets</h5>
+                            <table class="table">
                                 <thead>
                                     <tr>
                                         <th>Name</th>
                                         <th>Price</th>
-                                        <th>Currency</th>
-                                        <th>Available Qty</th>
-                                        <th>Status</th>
+                                        <th>Sold</th>
+                                        <th>Available</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($event->tickets as $ticket)
                                         <tr>
                                             <td>{{ $ticket->name }}</td>
-                                            <td>
-                                                {{ $ticket->price > 0 ? 'Ksh ' . number_format($ticket->price, 2) : 'Free' }}
-                                            </td>
-                                            <td>{{ strtoupper($ticket->currency) }}</td>
+                                            <td>${{ number_format($ticket->price, 2) }}</td>
+                                            <td>{{ $ticket->orders->sum('quantity') }}</td>
                                             <td>{{ $ticket->available_qty }}</td>
-                                            <td>
-                                                <span
-                                                    class="badge badge-{{ $ticket->status == 'active' ? 'success' : 'secondary' }}">
-                                                    {{ ucfirst($ticket->status) }}
-                                                </span>
-                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -87,80 +135,36 @@
                     </div>
                 </div>
 
-                {{-- Sales & Orders --}}
+                <!-- Revenue Chart -->
                 <div class="col-md-6">
-                    <div class="card shadow">
-                        <div class="card-header">
-                            <h5>Recent Orders</h5>
-                        </div>
+                    <div class="card">
                         <div class="card-body">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Order ID</th>
-                                        <th>Customer</th>
-                                        <th>Amount</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($event->orders as $order)
-                                        <tr>
-                                            <td>#{{ $order->id }}</td>
-                                            <td>{{ $order->user->name }}</td>
-                                            <td>Ksh {{ number_format($order->amount, 2) }}</td>
-                                            <td>
-                                                <span
-                                                    class="badge badge-{{ $order->status == 'completed' ? 'success' : 'warning' }}">
-                                                    {{ ucfirst($order->status) }}
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                            <h5>Revenue Breakdown</h5>
+                            <canvas id="revenueChart"></canvas>
                         </div>
                     </div>
                 </div>
-
-                {{-- Ticket Sales Chart --}}
-                <div class="col-md-6">
-                    <div class="card shadow">
-                        <div class="card-header">
-                            <h5>Ticket Sales Trend</h5>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="salesChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-
             </div>
-        @endsection
+        </div>
+    </div>
+@endsection
 
-        @section('scripts')
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-            <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    var ctx = document.getElementById('salesChart').getContext('2d');
-                    var salesChart = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: {!! json_encode($event->orders->pluck('created_at')->map(fn($date) => $date->format('M d'))) !!},
-                            datasets: [{
-                                label: 'Orders',
-                                data: {!! json_encode($event->orders->pluck('amount')) !!},
-                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                                borderColor: 'rgba(54, 162, 235, 1)',
-                                borderWidth: 2
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false
-                        }
-                    });
-                });
-            </script>
-        @endsection
+@section('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script>
+        var ctx = document.getElementById('revenueChart').getContext('2d');
+        var revenueChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Tickets Sold', 'Revenue'],
+                datasets: [{
+                    label: 'Event Statistics',
+                    data: [{{ $ticketsSold }}, {{ $totalRevenue }}],
+                    backgroundColor: ['#007bff', '#28a745'],
+                    borderColor: ['#007bff', '#28a745'],
+                    borderWidth: 1
+                }]
+            }
+        });
+    </script>
+@endsection

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Models\Event;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\User;
 use App\Utilities\Constants;
 use Illuminate\Http\Request;
@@ -110,7 +112,20 @@ class EventController extends Controller
         $event->load(['user:id,name,email,phone_number,role', 'tickets', 'orders'])
             ->loadCount('tickets', 'orders');
 
-        return view('admins.events.show', compact('event'));
+        $ticketsSold = OrderItem::whereHas('ticket', function ($query) use ($event) {
+            $query->where('event_id', $event->id);
+        })->sum('quantity');
+
+        $totalRevenue = Order::where('event_id', $event->id)
+            ->where('payment_status', 'successful')
+            ->sum('total_amount');
+
+        $attendeesCheckedIn = OrderItem::whereHas('ticket', function ($query) use ($event) {
+            $query->where('event_id', $event->id);
+        })->whereNotNull('checkin_time')->count();
+
+
+        return view('admins.events.show', compact('event', 'ticketsSold', 'totalRevenue', 'attendeesCheckedIn'));
     }
 
     /**
