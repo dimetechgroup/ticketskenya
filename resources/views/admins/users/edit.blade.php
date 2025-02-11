@@ -34,7 +34,7 @@
                                     <label class="required">User Name</label>
                                     <input type="text" name="name"
                                         class="form-control @error('name') is-invalid @enderror"
-                                        placeholder="{{ $user->name ?? 'Enter User Name' }}" value="{{ old('name') }}">
+                                        placeholder="{{ $user->name ?? 'Enter User Name' }}"  value="{{ $user->name ?? old('name') }}">
                                     @error('name')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
@@ -42,7 +42,7 @@
                                 <div class="form-group col-md-6">
                                     <label class="required">Password</label>
                                     <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" rows="3"
-                                        placeholder="Enter Password" value="{{ old('password') }}">{{ old('password') }}
+                                        placeholder="Enter Password" value="{{ old('password') }}">
 
                                     </input>
                                     @error('password')
@@ -54,23 +54,16 @@
                                 <div class="form-group col-md-6">
                                     <label>Contact Number</label>
                                     <input type="text" name="phone_number" class="form-control"
-                                        placeholder="Enter contact number" value="{{ $user->phone_number }}">
+                                        placeholder="Enter contact number" value="{{$user->phone_number}}">
                                 </div>
 
                                 <div class="form-group col-md-6">
                                     <label>Contact Email</label>
                                     <input type="email" name="email" class="form-control"
-                                        placeholder="{{$user->email}}" value="{{ old('email') }}">
+                                        placeholder="{{$user->email}}" value="{{$user->email}}">
                                 </div>
-
-                                <div class="form-group col-md-6">
-                                    <label>User Image</label>
-                                    <input type="file" name="image" class="form-control-file" value="{{ old('image') }}">
-                                </div>
-
-
                                 <!-- Submit Button -->
-                                <button type="submit" class="btn btn-success">Edit User</button>
+                                <button type="submit" class="btn btn-success ml-3">Edit User</button>
                             </form>
                         </div>
                     </div>

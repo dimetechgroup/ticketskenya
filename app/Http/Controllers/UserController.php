@@ -46,12 +46,13 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $user->id,
-            'password' => 'required|min:6',
+            'password' => 'nullable|min:6',
             'phone_number' => 'required',
 
         ]);
 
-        dd($request->all());
+        //hash password
+        $request['password'] = bcrypt($request->password);
 
         $user->update($request->all());
         return redirect()->route('users.index')->with('success', 'User updated successfully');
