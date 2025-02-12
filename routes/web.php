@@ -20,7 +20,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('events', EventController::class);
     // event.tickets
-    // Route::resource('events.tickets', TicketController::class)->except(['index', 'show']);
+    Route::resource('events.tickets', TicketController::class)->except(['index', 'show']);
 });
 
 require __DIR__ . '/auth.php';

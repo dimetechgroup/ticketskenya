@@ -36,8 +36,14 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h4 class="page-title">Event Details</h4>
                 <div>
-                    <a href="{{ route('events.edit', $event->id) }}" class="btn btn-primary">Edit</a>
-                    <form action="{{ route('events.destroy', $event->id) }}" method="POST" class="d-inline">
+                    {{-- link to create ticket --}}
+                    <a href="{{ route('events.tickets.create', ['event' => $event->id]) }}" class="btn btn-primary">Create
+                        Ticket</a>
+                    {{-- link to create order --}}
+
+                    <a href="{{ route('events.edit', $event->id) }}" class="btn btn-warning">Edit</a>
+                    <form action="{{ route('events.destroy', $event->id) }}" method="POST" class="d-inline"
+                        onsubmit="return confirm('Are you sure you want to delete this event?')">
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-danger">Delete</button>
@@ -90,7 +96,7 @@
                             </div>
                             <div class="col-6 mt-3">
                                 <div class="card-statistics">
-                                    <h5>{{ 0 - $attendeesCheckedIn }}</h5>
+                                    <h5>{{ $totalAttendees - $attendeesCheckedIn }}</h5>
                                     <p>Pending Check-ins</p>
                                 </div>
                             </div>
@@ -125,8 +131,8 @@
                                         <tr>
                                             <td>{{ $ticket->name }}</td>
                                             <td>${{ number_format($ticket->price, 2) }}</td>
-                                            <td>{{ $ticket->orders->sum('quantity') }}</td>
-                                            <td>{{ $ticket->available_qty }}</td>
+                                            <td>{{ $ticket->sold_quantity }}</td>
+                                            <td>{{ $ticket->quantity - $ticket->sold_quantity }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -145,6 +151,44 @@
                     </div>
                 </div>
             </div>
+            {{-- order details --}}
+
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5>Orders</h5>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>order_number</th>
+                                        <th>Total Amount</th>
+                                        <th>Currency</th>
+                                        <th>Payment Status</th>
+                                        <th>Tickets</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($event->orders as $order)
+                                        <tr>
+                                            <td>{{ $order->order_number }}</td>
+                                            <td>{{ $order->total_amount }}</td>
+                                            <td>{{ $order->currency }}</td>
+                                            <td>{{ $order->payment_status }}</td>
+                                            <td>
+                                                {{ $order->orderItems->count() }}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
         </div>
     </div>
 @endsection

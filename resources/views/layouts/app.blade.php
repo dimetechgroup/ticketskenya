@@ -18,10 +18,12 @@
 </head>
 
 <body>
-    <x-messages />
+
     <div class="wrapper">
+        <x-messages />
         @include('includes.admin.main-header')
         @include('includes.admin.mainSidebar')
+
         {{-- Main content --}}
         <div class="main-panel">
             @yield('content')

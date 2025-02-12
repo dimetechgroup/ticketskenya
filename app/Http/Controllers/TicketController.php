@@ -22,7 +22,7 @@ class TicketController extends Controller
      */
     public function create(Event $event)
     {
-        return view('events.tickets.create', compact('event'));
+        return view('admins.events.tickets.create', compact('event'));
     }
 
     /**

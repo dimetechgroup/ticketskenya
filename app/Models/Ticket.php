@@ -16,7 +16,8 @@ class Ticket extends Model
         'price', // Price of the ticket.: if price is 0, then it's free.
         'discount',
         'currency',
-        'available_qty', // Number of tickets available.
+        'quantity', // Total number of tickets available.
+        'sold_quantity', // Number of tickets available.
         'description',
         'status', // 'draft', 'active', 'sold out', 'cancelled'
         'max_per_user', // Maximum tickets a user can buy.

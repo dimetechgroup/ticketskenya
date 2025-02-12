@@ -1,4 +1,8 @@
-import axios from 'axios';
-window.axios = axios;
+import axios from "axios";
+import "bootstrap";
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+// Set up Axios globally
+axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
+
+// Export Axios in case you want to use it in other files
+export { axios };

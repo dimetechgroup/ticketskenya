@@ -123,9 +123,13 @@ class EventController extends Controller
         $attendeesCheckedIn = OrderItem::whereHas('ticket', function ($query) use ($event) {
             $query->where('event_id', $event->id);
         })->whereNotNull('checkin_time')->count();
+        $totalAttendees =
+            OrderItem::whereHas('ticket', function ($query) use ($event) {
+                $query->where('event_id', $event->id);
+            })->count();
 
 
-        return view('admins.events.show', compact('event', 'ticketsSold', 'totalRevenue', 'attendeesCheckedIn'));
+        return view('admins.events.show', compact('event', 'ticketsSold', 'totalRevenue', 'attendeesCheckedIn', 'totalAttendees'));
     }
 
     /**
@@ -133,7 +137,7 @@ class EventController extends Controller
      */
     public function edit(Event $event)
     {
-        return view('events.edit', compact('event'));
+        return view('admins.events.edit', compact('event'));
     }
 
     /**
@@ -149,7 +153,7 @@ class EventController extends Controller
 
         $event->update($data);
 
-        return redirect()->route('events.index')->with('success', 'Event updated successfully');
+        return redirect()->route('events.show', $event->id)->with('success', 'Event updated successfully');
     }
 
     /**
