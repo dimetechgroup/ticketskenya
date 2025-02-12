@@ -1,0 +1,155 @@
+@import "bootstrap/scss/bootstrap";
+
+// Variables
+
+
+
+$primary-color: #42A26C;
+$secondary-color: #dcdcdc;
+$dark-overlay: rgba(0, 0, 0, 0.6);
+$button-radius: 30px;
+
+$font-weight-bold: bold;
+$bg-overlay: rgba(0, 0, 0, 0.6);
+$blur-bg: rgba(255, 255, 255, 0.1);
+$input-border: #ffffff80;
+$transition: all 0.3s ease-in-out;
+
+// Mixin for centering elements
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-container {
+    @include flex-center; // Uses Bootstrap mixin for centering
+    height: 100vh;
+    background: url('../../../public/images/hero-bg.jpg') center/cover no-repeat;
+    position: relative;
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: $bg-overlay;
+        z-index: 1;
+    }
+
+    .auth-box {
+        position: relative;
+        z-index: 2;
+        background: $blur-bg;
+        backdrop-filter: blur(10px);
+        padding: 40px;
+        border-radius: 10px;
+        max-width: 400px;
+        text-align: center;
+        color: #fff;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        animation: fadeIn 1.2s ease-in-out;
+    }
+
+    .auth-title {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        animation: slideIn 1s ease-in-out;
+    }
+
+    .auth-subtitle {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        opacity: 0.9;
+    }
+
+    .input-group {
+        text-align: left;
+        margin-bottom: 15px;
+
+        label {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid $input-border;
+            background: transparent;
+            color: #fff;
+            transition: $transition;
+
+            &:focus {
+                border-color: $primary-color;
+                outline: none;
+                box-shadow: 0 0 10px rgba($primary-color, 0.5);
+            }
+        }
+    }
+
+    .actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+
+        .btn-primary {
+            width: 100%;
+            padding: 10px;
+            background: $primary-color;
+            border: none;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            transition: $transition;
+
+            &:hover {
+                background: darken($primary-color, 10%);
+                transform: scale(1.05);
+            }
+        }
+    }
+
+    .forgot-password,
+    .register-link {
+        display: block;
+        font-size: 0.9rem;
+        margin-top: 10px;
+        color: $secondary-color;
+        text-decoration: none;
+
+        &:hover {
+            color: $primary-color;
+        }
+    }
+
+    .register-link a {
+        font-weight: 600;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+// Animations
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

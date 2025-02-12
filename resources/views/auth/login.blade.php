@@ -1,4 +1,4 @@
-<x-guest-layout>
+{{-- <x-guest-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -44,4 +44,43 @@
             </x-primary-button>
         </div>
     </form>
-</x-guest-layout>
+</x-guest-layout> --}}
+
+{{-- resources/views/auth/login.blade.php --}}
+@extends('layouts.guest')
+
+@section('styles')
+    @vite('resources/scss/landingPage/auth.scss')
+@endsection
+
+@section('content')
+    <div class="auth-container">
+        <div class="auth-box">
+            <h2 class="auth-title">Welcome Back</h2>
+            <p class="auth-subtitle">Login to continue</p>
+
+            <form action="{{ route('login') }}" method="POST">
+                @csrf
+
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required autofocus>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+
+                <div class="actions">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <a href="{{ route('password.request') }}" class="forgot-password">{{ __('Forgot your password?') }}</a>
+                </div>
+
+                <div class="register-link">
+                    Don't have an account? <a href="{{ route('register') }}">Sign Up</a>
+                </div>
+            </form>
+        </div>
+    </div>
+@endsection
