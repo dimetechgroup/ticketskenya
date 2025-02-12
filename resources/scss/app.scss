@@ -1,3 +1,6 @@
+@import "bootstrap/scss/bootstrap";
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+
 .wrapper {
     position: relative;
 }
@@ -9,5 +12,8 @@
     width: 300px;
 }
 
-
-@import "bootstrap/scss/bootstrap";
+.required::after {
+    content: "*";
+    color: red;
+    margin-left: 5px;
+}
