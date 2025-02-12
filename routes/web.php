@@ -6,9 +6,8 @@ use App\Http\Controllers\TicketController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+require __DIR__ . '/landing.php';
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -19,8 +18,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('events', EventController::class);  // event.tickets
     Route::resource('users', UserController::class);
+    Route::resource('events', EventController::class);  // event.tickets
     Route::resource('events.tickets', TicketController::class)->except(['index', 'show']);
 });
 
