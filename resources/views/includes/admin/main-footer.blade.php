@@ -16,8 +16,8 @@
              </ul>
          </nav>
          <div class="copyright ml-auto">
-             2021, made with <i class="la la-heart heart text-danger"></i> by <a
-                 href="https://dimetechgroup.com/">Dimetechgroup LTD</a>
-         </div>
+            {{ date('Y') }}, made with <i class="la la-heart heart text-danger"></i> by <a
+                             href="https://dimetechgroup.com/">Dimetechgroup LTD</a>
+                     </div>
      </div>
  </footer>

@@ -1,0 +1,82 @@
+@import "bootstrap/scss/bootstrap";
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+
+
+$primary-color: #42A26C;
+$secondary-color: #dcdcdc;
+$dark-overlay: rgba(0, 0, 0, 0.6);
+$button-radius: 30px;
+$input-border: rgba(0, 0, 0, 0.3);
+$transition: all 0.3s ease-in-out;
+
+
+// Login Container
+.vh-100 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+// Left Side Image
+.card img {
+    border-radius: 15px 0 0 15px;
+    object-fit: cover;
+}
+
+
+// Input Fields
+.form-control {
+    border: 1px solid $input-border;
+    background: transparent;
+    transition: $transition;
+
+    &:focus {
+        border-color: $primary-color;
+        box-shadow: 0 0 10px rgba($primary-color, 0.5);
+    }
+
+    &::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+    }
+}
+
+// Buttons
+.btn-dark {
+    background: $primary-color;
+    border-radius: $button-radius;
+    font-weight: bold;
+    transition: $transition;
+    padding: 1rem 2.5rem;
+
+    &:hover {
+        background: darken($primary-color, 10%);
+        transform: scale(1.05);
+    }
+}
+
+// Links
+a {
+    color: $secondary-color;
+    text-decoration: none;
+    transition: $transition;
+
+    &:hover {
+        color: $primary-color;
+    }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+    .card img {
+        border-radius: 15px 15px 0 0;
+        height: 200px;
+    }
+}

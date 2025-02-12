@@ -14,6 +14,7 @@
     <title>{{ config('app.name', 'Welcome To Ticket Kenya') }}</title>
 
     @vite(['resources/scss/landingPage/app.scss', 'resources/js/app.ts'])
+    @yield('styles')
 </head>
 
 <body>
@@ -120,6 +121,7 @@
 
         </div>
     </footer>
+    @yield('scripts')
 
 </body>
 
