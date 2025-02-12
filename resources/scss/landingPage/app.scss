@@ -1,0 +1,118 @@
+
+@import "bootstrap/scss/bootstrap";
+
+.footer {
+    background-color: #42A26C;
+    color: #dcdcdc;
+
+    a {
+        color: #dcdcdc;
+        text-decoration: none;
+        &:hover {
+            color: #42A26C;
+        }
+    }
+
+    form .form-control {
+        border-radius: 20px;
+    }
+
+    form .btn {
+        border-radius: 20px;
+        background-color: #42A26C;
+        border: none;
+        color: #000;
+        font-weight: bold;
+        &:hover {
+            background-color: #ffba00;
+        }
+    }
+
+    .bi {
+        font-size: 20px;
+        margin-right: 10px;
+    }
+    .bottom-footer{
+        background-color: rgba(0, 0, 0, 0.2);
+        color: #dcdcdc;
+        padding: 40px 0;
+        width: 100%;
+    }
+}
+
+
+.heroSection {
+    background: url('../../../public/images/hero-bg.jpg') center/cover no-repeat;
+    height: 60vh; // Full height minus navbar
+    display: flex;
+    align-items: center;
+    color: white;
+    text-align: left;
+    position: relative;
+    padding: 4rem 0;
+    width: 100%;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6); // Dark overlay for better text contrast
+    }
+
+    .container {
+        position: relative;
+        z-index: 2;
+    }
+
+    .hero-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.2;
+    }
+
+    .hero-subtitle {
+        font-size: 2.5rem;
+        font-weight: 500;
+        margin-bottom: 1rem;
+    }
+
+    .hero-description {
+        font-size: 1.1rem;
+        max-width: 600px;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+    }
+
+    .hero-btn {
+        font-size: 1.2rem;
+        padding: 0.75rem 1.5rem;
+        border-radius: 30px;
+        transition: all 0.3s ease-in-out;
+
+        &.btn-primary {
+            background-color: #42A26C;
+            border: none;
+            color: #000;
+            font-weight: bold;
+
+            &:hover {
+                background-color: #ffba00;
+                transform: translateY(-3px);
+            }
+        }
+
+        &.btn-outline-light {
+            border: 2px solid white;
+            color: white;
+
+            &:hover {
+                background-color: white;
+                color: #000;
+                transform: translateY(-3px);
+            }
+        }
+    }
+}

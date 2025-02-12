@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="{{ asset('admin_assets/css/ready.css') }}">
     <link rel="stylesheet" href="{{ asset('admin_assets/css/demo.css') }}">
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/css/admin.css', 'resources/js/app.ts'])
+    @vite(['resources/scss/app.scss', 'resources/scss/admin.scss', 'resources/js/app.ts'])
     @yield('styles')
 </head>
 
