@@ -99,7 +99,7 @@
                         <div class="input-group mb-2">
                             <input type="email" class="form-control form-control-sm" placeholder="Enter your email"
                                 required>
-                            <button class="btn btn-primary btn-sm" type="submit">Subscribe</button>
+                            <button class="btn btn-info btn-sm" type="submit">Subscribe</button>
                         </div>
                     </form>
                     <div>

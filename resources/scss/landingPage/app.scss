@@ -1,30 +1,35 @@
-
+// resources/scss/landingPage/app.scss
 @import "bootstrap/scss/bootstrap";
 
+// Variables for colors and fonts
+$primary-color: #42A26C;
+$secondary-color: #dcdcdc;
+$hover-color: #ffba00;
+$dark-overlay: rgba(0, 0, 0, 0.6);
+$button-radius: 30px;
+$font-weight-bold: bold;
+
+// Footer Styles
 .footer {
-    background-color: #42A26C;
-    color: #dcdcdc;
+    background-color: $primary-color;
+    color: $secondary-color;
 
     a {
-        color: #dcdcdc;
+        color: $secondary-color;
         text-decoration: none;
         &:hover {
-            color: #42A26C;
+            color: $primary-color;
         }
     }
 
-    form .form-control {
-        border-radius: 20px;
-    }
+    form {
+        .form-control {
+            border-radius: 20px;
+        }
 
-    form .btn {
-        border-radius: 20px;
-        background-color: #42A26C;
-        border: none;
-        color: #000;
-        font-weight: bold;
-        &:hover {
-            background-color: #ffba00;
+        .btn {
+            border: none;
+            font-weight: $font-weight-bold;
         }
     }
 
@@ -32,15 +37,16 @@
         font-size: 20px;
         margin-right: 10px;
     }
-    .bottom-footer{
+
+    .bottom-footer {
         background-color: rgba(0, 0, 0, 0.2);
-        color: #dcdcdc;
+        color: $secondary-color;
         padding: 40px 0;
         width: 100%;
     }
 }
 
-
+// Hero Section Styles
 .heroSection {
     background: url('../../../public/images/hero-bg.jpg') center/cover no-repeat;
     height: 60vh; // Full height minus navbar
@@ -51,6 +57,7 @@
     position: relative;
     padding: 4rem 0;
     width: 100%;
+    position: relative;
 
     &::before {
         content: "";
@@ -59,7 +66,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.6); // Dark overlay for better text contrast
+        background: $dark-overlay;
     }
 
     .container {
@@ -69,7 +76,7 @@
 
     .hero-title {
         font-size: 1.5rem;
-        font-weight: bold;
+        font-weight: $font-weight-bold;
         line-height: 1.2;
     }
 
@@ -89,17 +96,17 @@
     .hero-btn {
         font-size: 1.2rem;
         padding: 0.75rem 1.5rem;
-        border-radius: 30px;
+        border-radius: $button-radius;
         transition: all 0.3s ease-in-out;
 
         &.btn-primary {
-            background-color: #42A26C;
+            background-color: $primary-color;
             border: none;
             color: #000;
-            font-weight: bold;
+            font-weight: $font-weight-bold;
 
             &:hover {
-                background-color: #ffba00;
+                background-color: $hover-color;
                 transform: translateY(-3px);
             }
         }
