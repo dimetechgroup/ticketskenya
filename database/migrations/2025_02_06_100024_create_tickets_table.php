@@ -18,7 +18,8 @@ return new class extends Migration
             $table->decimal('price', 10, 2);
             $table->decimal('discount', 10, 2)->default(0);
             $table->string('currency')->default('KES');
-            $table->integer('available_qty')->default(0);
+            $table->integer('quantity')->default(0);
+            $table->integer('sold_quantity')->default(0);
             $table->longText('description')->nullable();
             $table->enum('status', ['draft', 'active', 'sold out', 'cancelled'])->default('draft');
             $table->integer('max_per_user')->default(100);
