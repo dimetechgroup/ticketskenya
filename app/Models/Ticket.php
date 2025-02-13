@@ -19,7 +19,7 @@ class Ticket extends Model
         'quantity', // Total number of tickets available.
         'sold_quantity', // Number of tickets available.
         'description',
-        'status', // 'draft', 'active', 'sold out', 'cancelled'
+        'status', //  'active', 'sold out', 'cancelled'
         'max_per_user', // Maximum tickets a user can buy.
         'min_per_user', // Minimum tickets a user can buy.
         'promo_code', // Optional promo code.

@@ -6,7 +6,6 @@ class Constants
 {
     const KOBO_CURRENCY = 100;
 
-    const EVENT_STATUS_DRAFT = 'draft';
     const EVENT_STATUS_PENDING = 'pending';
     const EVENT_STATUS_APPROVED = 'approved';
     const EVENT_STATUS_CANCELLED = 'cancelled';
