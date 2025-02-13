@@ -11,9 +11,12 @@
         <h2 class="text-center">{{ $event->name }}</h2>
         <p class="text-center">{{ $event->description }}</p>
         <hr>
-        <div class="row">
+        <form action="" method="POST" class="row">
+            @csrf
             <div class="col-md-8">
-                <form action="" method="post" class="row">
+                <div class="row">
+
+
                     <div class="mb-3 col-md-6">
                         <label for="" class="form-label">Name</label>
                         <input type="text" name="name" id="name" class="form-control" placeholder="Full Name" />
@@ -41,26 +44,65 @@
                     {{-- Other Attendees form inputs from second : dynamically created and deleted --}}
                     <div id="other-attendees"></div>
 
-
-
-                </form>
+                </div>
             </div>
             {{-- calculation and summary here --}}
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Summary</h5>
-                        <p class="card-text">Ticket: {{ $ticket->name }}</p>
-                        <p class="card-text">Price: 1 * {{ $ticket->currency . ' ' . number_format($ticket->price) }}</p>
+            <div class="col-md-4 order-md-2 mb-4 px-5 mt-3">
+                <div class="alert alert-info d-none" role="alert" id="has-discount">
+                    You qualify for a discount ! 🎉
+                </div>
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Order summary</span>
 
-                    </div>
+                </h4>
+                <ul class="list-group mb-3">
 
+                    <li class="list-group-item d-flex justify-content-between lh-condensed p-4">
+                        <div>
+                            <h6 class="my-0">{{ $ticket->name }}</h6>
+                        </div>
+                        <strong>
+                            <span class="text-muted" id="summary-quantity">1 x</span>
+                            <span class="text-muted">12000</span>
+                        </strong>
+                    </li>
+
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Processing Fee</span>
+                        <span> {{ $ticket->currency }} <strong id="processing_fee">{{ $event->processing_fee }}
+                            </strong></span>
+                    </li>
+
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Discount</span>
+                        <span>{{ $ticket->currency }} <span id="discount"> 0</span>
+                        </span>
+                    </li>
+
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Total</span>
+                        <span>{{ $ticket->currency }}<strong id="total">0</strong>
+                        </span>
+                    </li>
+
+                </ul>
+
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" required="">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        By submitting this form, I agreee to ticketskenya.com <a
+                            href="https://ticketskenya.com/site/page?id=3" target="_blank"> terms and conditions</a>
+                    </label>
                 </div>
 
 
+                <button type="submit" class="btn btn-primary btn-custom-primary  mt-3 float-end">Place order</button>
+
             </div>
-        @endsection
 
-        @section('scripts')
+        </form>
+    @endsection
 
-        @endsection
+    @section('scripts')
+
+    @endsection
