@@ -1,83 +1,11 @@
 @extends('layouts.guest')
 @section('styles')
-    <style>
-        .whyChooseUs {
-            background-image: url("/images/why-us-bg.png");
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-position: center bottom;
-            padding: 80px 0;
-            position: relative;
-            color: #000;
-        }
-
-        .whyChooseUs h6 {
-            font-size: 1rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .whyChooseUs h1 {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        .whyChooseUs p {
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-
-        .card-custom {
-            border: none;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            color: white;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            height: 300px;
-            justify-content: end;
-
-        }
-
-        .card-blue {
-
-            background-image: url("/images/icon-color-box-bg01.svg");
-            background-repeat: no-repeat;
-            background-size: contain;
-            background-color: #007bff;
-        }
-
-        .card-green {
-            background-image: url("/images/icon-color-box-bg01.svg");
-            background-repeat: no-repeat;
-            background-size: contain;
-            background-color: #28a745;
-        }
-
-        .card-black {
-            background-image: url("/images/icon-color-box-bg01.svg");
-            background-repeat: no-repeat;
-            background-size: contain;
-            background-color: #333;
-        }
-
-        .card-custom h4 {
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-
-        .card-custom p {
-            font-size: 0.95rem;
-            margin-top: 10px;
-        }
-    </style>
 @endsection
 
 @section('content')
     {{-- Hero Section --}}
     <div class="heroSection">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-7 text-white">
                     <h1 class="hero-title">Tickets Kenya</h1>
@@ -124,6 +52,10 @@
                         and virtual events each year.
                     </p>
                     {{-- action --}}
+                    <a class="btn btn-primary btn-lg hero-btn text-white" href="{{ route('login') }}">
+                        Create Your Event
+                    </a>
+
                 </div>
 
                 <div class="col-lg-6">
@@ -186,5 +118,4 @@
             </div>
         </div>
     </section>
-
 @endsection
