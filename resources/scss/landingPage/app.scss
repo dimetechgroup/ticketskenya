@@ -2,7 +2,7 @@
 @import "bootstrap/scss/bootstrap";
 
 // Variables for colors and fonts
-$primary-color: #42A26C;
+$primary-color: #42a26c;
 $secondary-color: #dcdcdc;
 $hover-color: #ffba00;
 $dark-overlay: rgba(0, 0, 0, 0.6);
@@ -48,7 +48,7 @@ $font-weight-bold: bold;
 
 // Hero Section Styles
 .heroSection {
-    background: url('../../../public/images/hero-bg.jpg') center/cover no-repeat;
+    background: url("../../../public/images/hero-bg.jpg") center/cover no-repeat;
     height: 60vh; // Full height minus navbar
     display: flex;
     align-items: center;
@@ -122,4 +122,29 @@ $font-weight-bold: bold;
             }
         }
     }
+}
+
+.circle-wrapper {
+    position: relative;
+}
+.large-circle {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-color: #f5c43b;
+    position: absolute;
+}
+.small-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #4caf50;
+    position: absolute;
+    top: 75px;
+    left: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 1.5rem;
 }

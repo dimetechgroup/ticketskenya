@@ -1,0 +1,16 @@
+.whyChooseUs {
+    // background-image: url("/images/why-us-bg.png");
+    background-color: aqua;
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 75vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+}
+body {
+    background-color: #c71120 !important;
+}
