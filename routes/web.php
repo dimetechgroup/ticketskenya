@@ -24,6 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('events.tickets', TicketController::class)->except(['index', 'show']);
     // route to view event attendees
     Route::get('events/{event}/attendees', [EventController::class, 'attendees'])->name('events.attendees');
+    Route::post('/events/attendees/checkin/{id}', [EventController::class, 'checkInAttendee']);
 });
 
 require __DIR__ . '/auth.php';
