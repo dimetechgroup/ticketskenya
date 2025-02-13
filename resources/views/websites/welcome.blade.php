@@ -158,4 +158,33 @@
             </div>
         </div>
     </section>
+
+    {{-- Testimonials --}}
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Image Section -->
+                <div class="col-lg-6 col-md-12 px-5">
+                    <div class="image">
+                        <img src="/images/testimonial.png" alt="Testimonials" class="img-fluid">
+                    </div>
+                </div>
+                <!-- Text Section -->
+                <div class="col-lg-6 col-md-12">
+                    <h6 class="text-success">REVIEWS</h6>
+                    <h1 class="fw-bold">WHAT PEOPLE SAY?</h1>
+                    <p class="testimonial-quote">
+                        "Can I just say that it's been an absolute pleasure working with you all.
+                        Everyone's been so friendly, helpful and delightful, so please pass my
+                        thanks on to the team!"
+                    </p>
+                    <p class="testimonial-author">
+                        <strong>Rubina Kibe,</strong><br>
+                        Event Manager and Director
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
 @endsection
