@@ -19,8 +19,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('users', UserController::class);
+    Route::post('events/{event}/status', [EventController::class, 'updateStatus'])->name('events.status');
     Route::resource('events', EventController::class);  // event.tickets
     Route::resource('events.tickets', TicketController::class)->except(['index', 'show']);
+    // route to view event attendees
+    Route::get('events/{event}/attendees', [EventController::class, 'attendees'])->name('events.attendees');
 });
 
 require __DIR__ . '/auth.php';

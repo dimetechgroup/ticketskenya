@@ -6,7 +6,7 @@
 @section('content')
     <div class="content">
         <div class="container-fluid">
-            <h4 class="page-title text-center">Create Ticket For {{ $event->name }}</h4>
+            <h4 class="page-title text-center">Update Ticket For {{ $event->name }}</h4>
 
             <div class="row">
                 <div class="col-md-8 mx-auto">
@@ -15,18 +15,18 @@
                             <h4 class="card-title mb-0 text-white font-weight-bold">Ticket Details</h4>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('events.tickets.store', ['event' => $event->id]) }}" method="POST"
-                                class="row" enctype="multipart/form-data">
+                            <form
+                                action="{{ route('events.tickets.update', ['event' => $event->id, 'ticket' => $ticket->id]) }}"
+                                method="POST" class="row" enctype="multipart/form-data">
                                 @csrf
-
-
+                                @method('PUT')
 
                                 <!-- ticket Name -->
                                 <div class="form-group col-md-6">
                                     <label class="required">Ticket Name</label>
                                     <input type="text" name="name"
                                         class="form-control @error('name') is-invalid @enderror"
-                                        placeholder="Enter Ticket name" value="{{ old('name') }}">
+                                        placeholder="Enter Ticket name" value="{{ old('name', $ticket->name) }}">
                                     @error('name')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
@@ -35,7 +35,7 @@
                                     <label class="required">Ticket Price</label>
                                     <input type="number" name="price"
                                         class="form-control @error('price') is-invalid @enderror"
-                                        placeholder="Enter Ticket Price" value="{{ old('price') }}">
+                                        placeholder="Enter Ticket Price" value="{{ old('price', $ticket->price) }}">
                                     @error('price')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
@@ -54,7 +54,8 @@
                                     <label class="required">Quantity</label>
                                     <input type="number" name="quantity"
                                         class="form-control @error('quantity') is-invalid @enderror"
-                                        placeholder="Total number of tickets available" value="{{ old('quantity') }}">
+                                        placeholder="Total number of tickets available"
+                                        value="{{ old('quantity', $ticket->quantity) }}">
                                     @error('quantity')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
@@ -65,7 +66,7 @@
                                     <input type="number" name="min_per_user"
                                         class="form-control @error('min_per_user') is-invalid @enderror"
                                         placeholder=" Minimum tickets a user can buy." min="0"
-                                        value="{{ old('min_per_user', 1) }}">
+                                        value="{{ old(', $ticket->name', $ticket->min_per_user) }}">
                                     @error('min_per_user')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
@@ -74,7 +75,8 @@
                                     <label class="required">Max Per User</label>
                                     <input type="number" name="max_per_user"
                                         class="form-control @error('max_per_user') is-invalid @enderror"
-                                        placeholder="Maximum tickets a user can buy" value="{{ old('max_per_user') }}">
+                                        placeholder="Maximum tickets a user can buy"
+                                        value="{{ old('max_per_user', $ticket->max_per_user) }}">
                                     @error('max_per_user')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
@@ -83,7 +85,7 @@
                                 <div class="form-group col-md-12">
                                     <label class="required">Description</label>
                                     <textarea name="description" id="editor" class="form-control @error('description') is-invalid @enderror"
-                                        placeholder="Enter Ticket Description">{{ old('description') }}</textarea>
+                                        placeholder="Enter Ticket Description">{{ old('description', $ticket->description) }}</textarea>
                                     @error('description')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
@@ -94,7 +96,7 @@
                                     class="form-group col-md-6 mt-2 offset-md-3  rounded d-flex align-items-center justify-content-center">
 
                                     <!-- Submit Button -->
-                                    <button type="submit" class="btn btn-success btn-lg">Create Ticket</button>
+                                    <button type="submit" class="btn btn-success btn-lg">Update Ticket</button>
                                 </div>
                             </form>
                         </div>

@@ -49,7 +49,7 @@ class TicketController extends Controller
      */
     public function edit(Event $event, Ticket $ticket)
     {
-        return view('events.tickets.edit', compact('event', 'ticket'));
+        return view('admins.events.tickets.edit', compact('event', 'ticket'));
     }
 
     /**
