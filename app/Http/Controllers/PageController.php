@@ -35,4 +35,10 @@ class PageController extends Controller
             ->firstOrFail();
         return view('websites.event-details', compact('event'));
     }
+    public function eventTicketBuy(string $slug, int $ticketId)
+    {
+        $event = Event::query()->where('slug', $slug)->firstOrFail();
+        $ticket = $event->tickets()->where('id', $ticketId)->firstOrFail();
+        return view('websites.event-ticket-buy', compact('event', 'ticket'));
+    }
 }

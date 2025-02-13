@@ -1,0 +1,58 @@
+// Variables
+$primary-color: #42a26c;
+$secondary-color: #dcdcdc;
+$text-muted: #6c757d;
+
+// Global Styles
+body {
+    font-family: "Poppins", sans-serif;
+    background-color: #f8f9fa;
+}
+
+// Event Page Container
+.event-container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    animation: fadeInUp 0.5s ease-in-out;
+}
+
+// Image Styling
+.event-img {
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+}
+
+// Event Information
+.event-info {
+    i {
+        color: $primary-color;
+    }
+}
+
+// Buy Button
+.buy-btn {
+    background: linear-gradient(135deg, $primary-color, $secondary-color);
+    border: none;
+    padding: 8px 15px;
+    color: white;
+    transition: all 0.3s ease-in-out;
+    border-radius: 5px;
+
+    &:hover {
+        transform: scale(1.1);
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+}
+
+// Responsive Styling
+@media (max-width: 768px) {
+    .event-container {
+        padding: 20px;
+    }
+}
