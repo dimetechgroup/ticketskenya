@@ -13,6 +13,7 @@ class PageController extends Controller
         // current and future events
         $current_future_events = Event::query()->select([
             'id',
+            'slug',
             'image',
             'name',
             'start_date',
@@ -25,5 +26,13 @@ class PageController extends Controller
 
 
         return view('websites.welcome', compact('current_future_events'));
+    }
+
+    public function singleEvent(string $slug)
+    {
+        $event = Event::query()->where('slug', $slug)
+            ->with(['tickets'])
+            ->firstOrFail();
+        return view('websites.event-details', compact('event'));
     }
 }

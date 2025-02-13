@@ -24,7 +24,7 @@
         </div>
     </div>
     {{-- Events Card --}}
-    <div class="container ">
+    <div class="container pt-2 ">
         <div class="row py-2">
             @foreach ($current_future_events as $event)
                 @component('components.events.event-card', [
@@ -32,7 +32,7 @@
                     'date' => $event->start_date->format('M d,Y H:s'),
                     'title' => $event->name,
                     'venue' => $event->venue,
-                    'url' => '#',
+                    'url' => route('event.single', $event->slug),
                 ])
                 @endcomponent
             @endforeach

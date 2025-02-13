@@ -11,7 +11,8 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    <title>{{ config('app.name', 'Welcome To Ticket Kenya') }}</title>
+    <title>@yield('title', config('app.name', 'Welcome To Ticket Kenya'))</title>
+
 
     @vite(['resources/scss/landingPage/app.scss', 'resources/js/app.ts'])
     @yield('styles')
