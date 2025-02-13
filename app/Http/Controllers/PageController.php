@@ -10,23 +10,20 @@ class PageController extends Controller
 {
     public function indexPage()
     {
-        // current and future events
-        $current_future_events = Event::query()->select([
-            'id',
-            'slug',
-            'image',
-            'name',
-            'start_date',
-            'venue'
-        ])
+        // Get all non-private events
+        $events = Event::query()
+            ->select(['id', 'slug', 'image', 'name', 'start_date', 'venue'])
             ->where('is_private', 0)
-            ->where('start_date', '>=', now())
-            ->lazyByIdDesc();
+            ->orderByDesc('start_date')
+            ->get();
 
+        // Separate future & past events
+        $current_future_events = $events->where('start_date', '>=', now());
+        $past_events = $events->where('start_date', '<', now());
 
-
-        return view('websites.welcome', compact('current_future_events'));
+        return view('websites.welcome', compact('current_future_events', 'past_events'));
     }
+
 
     public function singleEvent(string $slug)
     {
@@ -40,5 +37,9 @@ class PageController extends Controller
         $event = Event::query()->where('slug', $slug)->firstOrFail();
         $ticket = $event->tickets()->where('id', $ticketId)->firstOrFail();
         return view('websites.event-ticket-buy', compact('event', 'ticket'));
+    }
+    public function contactPage(): View
+    {
+        return view('websites.contact');
     }
 }

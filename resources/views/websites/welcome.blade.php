@@ -27,14 +27,13 @@
     <div class="container pt-2 ">
         <div class="row py-2">
             @foreach ($current_future_events as $event)
-                @component('components.events.event-card', [
+                @include('components.events.event-card', [
                     'image' => $event->image_url,
-                    'date' => $event->start_date->format('M d,Y H:s'),
+                    'date' => $event->start_date->format('M d, Y H:i'),
                     'title' => $event->name,
-                    'venue' => $event->venue,
+                    'venue' => $event->venue ?? '',
                     'url' => route('event.single', $event->slug),
                 ])
-                @endcomponent
             @endforeach
 
         </div>
@@ -120,4 +119,26 @@
             </div>
         </div>
     </section>
-@endsection
+
+    {{-- past events --}}
+    <section class="past-events">
+        <div class="container">
+            <div class="text-center py-5">
+                <h6 class="text-success">PAST EVENTS</h6>
+                <h1 class="fw-bold">Events You Missed</h1>
+            </div>
+
+            <div class="row">
+                @foreach ($past_events as $event)
+                    @include('components.events.event-card', [
+                        'image' => $event->image_url,
+                        'date' => $event->start_date->format('M d, Y H:i'),
+                        'title' => $event->name,
+                        'venue' => $event->venue ?? '',
+                        'url' => route('event.single', $event->slug),
+                    ])
+                @endforeach
+
+            </div>
+        </div>
+    @endsection

@@ -1,4 +1,5 @@
 {{-- resources/views/components/events/event-card.blade.php --}}
+@props(['image', 'date', 'title', 'venue', 'url'])
 <div class="col-md-4 mb-4">
     <div class="card shadow-sm event-card">
         <img src="{{ $image }}" class="card-img-top" alt="{{ $title }}">
