@@ -36,6 +36,50 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h4 class="page-title">Event Details</h4>
                 <div>
+                    {{-- model to change ticket status --}}
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ststusChange">
+                        Change Status
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="ststusChange" tabindex="-1" aria-labelledby="ststusChangeLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="ststusChangeLabel">Change Status</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <form action="{{ route('events.status', $event->id) }}" method="POST">
+                                    <div class="modal-body">
+                                        {{--  --}}
+
+                                        @csrf
+                                        <div class="form-group">
+                                            <label for="status" class="d-none">Status</label>
+                                            <select name="status" id="status" class="form-control">
+                                                <option value="approved">Approve</option>
+                                                <option value="cancelled">Reject</option>
+                                                <option value="completed">Completed</option>
+                                            </select>
+
+
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer d-flex justify-content-between">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save changes</button>
+
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+
                     {{-- link to create ticket --}}
                     <a href="{{ route('events.tickets.create', ['event' => $event->id]) }}" class="btn btn-primary">Create
                         Ticket</a>
@@ -129,8 +173,13 @@
                                 <tbody>
                                     @foreach ($event->tickets as $ticket)
                                         <tr>
-                                            <td>{{ $ticket->name }}</td>
-                                            <td>${{ number_format($ticket->price, 2) }}</td>
+                                            <td>
+                                                <a class="text text-primary fw-bold link-underline link-underline-opacity-0 link-underline-opacity-100-hove"
+                                                    href="{{ route('events.tickets.edit', ['event' => $event->id, 'ticket' => $ticket->id]) }}">
+                                                    {{ $ticket->name }}
+                                                </a>
+                                            </td>
+                                            <td>{{ $ticket->currency . ' ' . number_format($ticket->price, 2) }}</td>
                                             <td>{{ $ticket->sold_quantity }}</td>
                                             <td>{{ $ticket->quantity - $ticket->sold_quantity }}</td>
                                         </tr>
@@ -156,8 +205,13 @@
             <div class="row mt-4">
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-header d-flex justify-content-between">
                             <h5>Orders</h5>
+                            <a href="{{ route('events.attendees', ['event' => $event]) }}" class="btn btn-primary">View All
+                                Attendees</a>
+                        </div>
+                        <div class="card-body">
+
                             <table class="table">
                                 <thead>
                                     <tr>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use App\Models\Event;
 use App\Models\Order;
 
 class OrderController extends Controller
@@ -11,9 +12,11 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Event $event)
     {
-        //
+        $orders = $event->orders()->with(['orderItems'])->latest()->paginate(10);
+
+        return view('admins.events.orders.index', compact('event', 'orders'));
     }
 
     /**
