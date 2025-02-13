@@ -1,5 +1,6 @@
 import axios from "axios";
 import "bootstrap";
+import "@fortawesome/fontawesome-free/js/all";
 
 // Set up Axios globally
 axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";

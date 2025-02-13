@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
+use App\Http\Requests\UpdateEventStatusRequest;
 use App\Models\Event;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -12,6 +13,7 @@ use App\Utilities\Constants;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
 
 class EventController extends Controller
 {
@@ -38,15 +40,10 @@ class EventController extends Controller
             ->pluck('count', 'status');
 
         // Define possible statuses and set default count (0) if missing
-        $statuses = ['draft', 'pending', 'approved', 'cancelled', 'completed'];
+        $statuses = ['pending', 'approved', 'cancelled', 'completed'];
 
         $statistics = collect([
-            [
-                'color'    => 'card-warning',
-                'icon'     => 'la la-edit',
-                'category' => 'Draft Events',
-                'status'   => 'draft',
-            ],
+
             [
                 'color'    => 'card-info',
                 'icon'     => 'la la-hourglass-half',
@@ -170,5 +167,38 @@ class EventController extends Controller
         $event->delete();
 
         return redirect()->route('events.index')->with('success', 'Event deleted successfully');
+    }
+
+    public function updateStatus(UpdateEventStatusRequest $request, Event $event)
+    {
+        $data = $request->validated();
+        $event->update($data);
+
+        return redirect()->route('events.show', $event->id)->with('success', 'Event status updated successfully');
+    }
+
+    /***
+     * Display attendees for a specific event
+     * @param Event $event
+     *
+     */
+    public function attendees(int $eventId): View
+    {
+        $event = Event::with([
+            'orders.orderItems.ticket',
+            'orders.orderItems.checkinBy'
+        ])->findOrFail($eventId);
+
+        return view('admins.events.attendees', compact('event'));
+    }
+    public function checkInAttendee($id)
+    {
+        $attendee = OrderItem::findOrFail($id);
+        $attendee->update([
+            'checkin_time' => now(),
+            'status' => 'used'
+        ]);
+
+        return response()->json(['success' => true]);
     }
 }

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('quantity')->default(0);
             $table->integer('sold_quantity')->default(0);
             $table->longText('description')->nullable();
-            $table->enum('status', ['draft', 'active', 'sold out', 'cancelled'])->default('draft');
+            $table->enum('status', ['active', 'sold out', 'cancelled'])->default('active');
             $table->integer('max_per_user')->default(100);
             $table->integer('min_per_user')->default(1);
             $table->string('promo_code')->nullable();

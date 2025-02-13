@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class UpdateTicketRequest extends FormRequest
 {
@@ -23,15 +24,19 @@ class UpdateTicketRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('tickets')->ignore($this->ticket->id)->where('event_id', $this->event->id),
+            ],
             'price' => 'required|numeric|min:0',
             'discount' => 'nullable|numeric|min:0',
-            'currency' => 'required|string|size:3',
-            'available_qty' => 'required|integer|min:0',
+            'quantity' => 'required|integer|min:1',
+            'min_per_user' => 'required|integer|min:0',
+            'max_per_user' => 'required|integer|min:0',
             'description' => 'nullable|string',
-            'max_per_user' => 'required|integer|min:1',
-            'min_per_user' => 'required|integer|min:1',
-            'promo_code' => 'nullable|string|max:50',
+            // 'promo_code' => 'nullable|string|max:50',
         ];
     }
 }

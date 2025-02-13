@@ -1,7 +1,7 @@
  <div class="main-header">
      <div class="logo-header">
-         <a href="index.html" class="logo">
-             Ready Dashboard
+         <a href="#" class="logo">
+             Tickets Kenya
          </a>
          <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse"
              aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
@@ -97,16 +97,16 @@
                  <li class="nav-item dropdown">
                      <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
                          <img src="{{ asset('admin_assets/img/profile.jpg') }}" alt="user-img" width="36"
-                             class="img-circle"><span>Hizrian</span></span> </a>
+                             class="img-circle"><span>{{ Auth::user()->name }}</span></span> </a>
                      <ul class="dropdown-menu dropdown-user">
                          <li>
                              <div class="user-box">
                                  <div class="u-img"><img src="{{ asset('admin_assets/img/profile.jpg') }}"
                                          alt="user"></div>
                                  <div class="u-text">
-                                     <h4>Hizrian</h4>
-                                     <p class="text-muted">hello@themekita.com</p><a href="profile.html"
-                                         class="btn btn-rounded btn-danger btn-sm">View Profile</a>
+                                     <h4>{{ Auth::user()->name }}</h4>
+                                     <p class="text-muted">{{ Auth::user()->email }}</p>
+
                                  </div>
                              </div>
                          </li>
@@ -118,7 +118,13 @@
                          <a class="dropdown-item" href="#"><i class="ti-settings"></i> Account
                              Setting</a>
                          <div class="dropdown-divider"></div>
-                         <a class="dropdown-item" href="#"><i class="fa fa-power-off"></i> Logout</a>
+                        <a class="dropdown-item" href="{{ route('logout') }}"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="fa fa-power-off"></i> Logout
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
                      </ul>
                      <!-- /.dropdown-user -->
                  </li>

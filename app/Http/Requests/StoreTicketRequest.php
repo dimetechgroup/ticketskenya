@@ -23,7 +23,12 @@ class StoreTicketRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                'unique:tickets,name,NULL,id,event_id,' . $this->event->id,
+            ],
             'price' => 'required|numeric|min:0',
             'discount' => 'nullable|numeric|min:0',
             'quantity' => 'required|integer|min:1',
