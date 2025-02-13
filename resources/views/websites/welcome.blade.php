@@ -118,4 +118,25 @@
             </div>
         </div>
     </section>
+
+    {{-- past events --}}
+    <section class="past-events">
+        <div class="container">
+            <div class="text-center py-5">
+                  <h6 class="text-success">PAST EVENTS</h6>
+            <h1 class="fw-bold">Events You Missed</h1>
+            </div>
+
+            <div class="row">
+                @component('components.events.event-card', [
+                    'image' => '/images/Concert.jpeg',
+                    'date' => 'Mar 21, 2025',
+                    'title' => 'Rotary Club of Karen Charity Golf Event',
+                    'time' => '06:00 - 18:00',
+                    'location' => 'Karen Country Club',
+                    'url' => '#',
+                ])
+                @endcomponent
+            </div>
+        </div>
 @endsection
