@@ -24,17 +24,19 @@
         </div>
     </div>
     {{-- Events Card --}}
-    <div class="container ">
+    <div class="container pt-2 ">
         <div class="row py-2">
-            @component('components.events.event-card', [
-                'image' => '/images/Golf.jpeg',
-                'date' => 'Mar 21, 2025',
-                'title' => 'Rotary Club of Karen Charity Golf Event',
-                'time' => '06:00 - 18:00',
-                'location' => 'Karen Country Club',
-                'url' => '#',
-            ])
-            @endcomponent
+            @foreach ($current_future_events as $event)
+                @component('components.events.event-card', [
+                    'image' => $event->image_url,
+                    'date' => $event->start_date->format('M d,Y H:s'),
+                    'title' => $event->name,
+                    'venue' => $event->venue,
+                    'url' => route('event.single', $event->slug),
+                ])
+                @endcomponent
+            @endforeach
+
         </div>
     </div>
 

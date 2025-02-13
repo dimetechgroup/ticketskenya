@@ -1,5 +1,6 @@
 // resources/scss/landingPage/app.scss
 @import "bootstrap/scss/bootstrap";
+@import "@fortawesome/fontawesome-free/css/all.min.css";
 
 // Variables for colors and fonts
 $primary-color: #42a26c;
@@ -8,6 +9,12 @@ $hover-color: #ffba00;
 $dark-overlay: rgba(0, 0, 0, 0.6);
 $button-radius: 30px;
 $font-weight-bold: bold;
+// Variables
+$card-color: #007bff;
+$success-color: #28a745;
+$dark-color: #333;
+$bg-pattern: "../../../public/images/icon-color-box-bg01.svg";
+$bg-main: "../../../public/images/why-us-bg.png";
 
 // Footer Styles
 .footer {
@@ -213,13 +220,6 @@ $font-weight-bold: bold;
     }
 }
 
-// Variables
-$card-color: #007bff;
-$success-color: #28a745;
-$dark-color: #333;
-$bg-pattern: "../../../public/images/icon-color-box-bg01.svg";
-$bg-main: "../../../public/images/why-us-bg.png";
-
 // Mixin for card styles
 @mixin card-style($bg-color) {
     background-image: url($bg-pattern);
@@ -291,11 +291,84 @@ $bg-main: "../../../public/images/why-us-bg.png";
 }
 
 .btn-custom-primary {
-    transition: all 0.45scubic-bezier(0.65, 0, 0.076, 1);
-    color: $success-color;
+    font-size: 1.2rem;
+    padding: 0.55rem 1.2rem;
+    border-radius: $button-radius;
+    transition: all 0.3s ease-in-out;
 
-    font-weight: 600;
-    line-height: 64px;
-    text-align: center;
-    font-size: 15px;
+    &.btn-primary {
+        background-color: $primary-color;
+        border: none;
+        color: #000;
+        font-weight: $font-weight-bold;
+
+        &:hover {
+            background-color: $hover-color;
+            transform: translateY(-3px);
+        }
+    }
+
+    &.btn-outline-light {
+        border: 2px solid white;
+        color: white;
+
+        &:hover {
+            background-color: white;
+            color: #000;
+            transform: translateY(-3px);
+        }
+    }
+}
+
+$card-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+$hover-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+.event-card {
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: $card-shadow;
+    transition:
+        transform 0.3s ease-in-out,
+        box-shadow 0.3s ease-in-out;
+
+    &:hover {
+        transform: translateY(-10px);
+        box-shadow: $hover-shadow;
+    }
+
+    .card-body {
+        padding: 20px;
+        text-align: center;
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: $dark-color;
+            text-decoration: none;
+            transition: color 0.3s ease-in-out;
+
+            &:hover {
+                color: darken($dark-color, 10%);
+            }
+        }
+        .d-flex {
+            align-items: center;
+
+            p {
+                font-size: 0.9rem;
+                color: $secondary-color;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
+
+            .badge {
+                font-size: 0.85rem;
+                font-weight: bold;
+                background-color: $success-color;
+                padding: 5px 10px;
+                border-radius: 5px;
+            }
+        }
+    }
 }

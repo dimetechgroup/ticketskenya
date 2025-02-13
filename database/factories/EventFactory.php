@@ -18,14 +18,15 @@ class EventFactory extends Factory
     public function definition(): array
     {
         return [
+            'slug' => $this->faker->unique()->slug,
             'name' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
             'venue' => $this->faker->city,
             'location' => $this->faker->randomElement(['online', 'offline']),
             'start_date' => $this->faker->dateTimeBetween('now', '+1 month'),
             'end_date' => $this->faker->dateTimeBetween('+1 month', '+2 months'),
-            'status' => $this->faker->randomElement(['draft', 'pending', 'approved', 'cancelled', 'completed']),
-            'image' => 'https://via.placeholder.com/800x400',
+            'status' => $this->faker->randomElement(['pending', 'approved', 'cancelled', 'completed']),
+            'image' => 'events/RiSEBqoNO3OfKB4B4Xsk7cIDKp83fodt14U3Tu1U.jpg',
             'user_id' => User::all()->random()->id,
             'meeting_link' => $this->faker->url,
             'currency' => $this->faker->randomElement(['KES', 'USD']),
