@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Utilities\Constants;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -94,6 +95,7 @@ class EventController extends Controller
         $user           = User::find(Auth::id());
         $data           = $request->validated();
         $data['status'] = Constants::EVENT_STATUS_PENDING;
+        $data['slug'] =  Str::slug($data['name']);
         $data['image']  = Storage::disk(config('filesystems.default'))->put('events', $request->file('image'));
 
         $user->events()->create($data);
