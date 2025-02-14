@@ -16,6 +16,23 @@ $dark-color: #333;
 $bg-pattern: "../../../public/images/icon-color-box-bg01.svg";
 $bg-main: "../../../public/images/why-us-bg.png";
 
+.wrapper {
+    position: relative;
+}
+#message {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 9000;
+    width: 300px;
+}
+
+.required::after {
+    content: "*";
+    color: red;
+    margin-left: 5px;
+}
+
 // Footer Styles
 .footer {
     background-color: $primary-color;

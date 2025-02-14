@@ -2,12 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TicketPurchaserequest;
+use App\Http\Services\PayStackService;
 use App\Models\Event;
+use App\Models\Order;
+use App\Models\Ticket;
+use App\Utilities\Constants;
+use App\Utilities\GlobalUtilities;
+use App\Utilities\PDFHandler;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PageController extends Controller
 {
+    use PDFHandler;
+    private PayStackService $paystack;
+
+    public function __construct()
+    {
+        $this->paystack = new PayStackService();
+    }
+
     public function indexPage()
     {
         // Get all non-private events
@@ -41,5 +59,84 @@ class PageController extends Controller
     public function contactPage(): View
     {
         return view('websites.contact');
+    }
+
+    public function purchaseTicket(TicketPurchaserequest $request, Ticket $ticket)
+    {
+        $data = $request->validated();
+        DB::beginTransaction();
+        try {
+            $orderNumber = GlobalUtilities::generateCode(Order::class, 'order_number', "ORD");
+            // order number with prefix timestamp
+            $orderNumberWIthPrefix = $orderNumber . '-' . time();
+
+            // Create the order
+            $order = $ticket->orders()->create([
+                'order_number' => GlobalUtilities::generateCode(Order::class, 'order_number', "ORD"),
+                'total_amount' => $ticket->price * intval($data['number_tickets']),
+                'currency' => $ticket->currency,
+                'payment_status' => Constants::PAYMENT_STATUS_PENDING,
+                'paystack_reference' => $orderNumberWIthPrefix
+
+            ]);
+            // order item
+            foreach ($data['attendees'] as $key => $attendee) {
+                $order->orderItems()->create([
+
+                    'ticket_id' => $ticket->id,
+                    'quantity' => 1,
+                    'amount' => $ticket->price,
+                    'currency' => $ticket->currency,
+                    'attendee_name' => $attendee['name'],
+                    'attendee_email' => $attendee['email'],
+                    'attendee_phone' => $attendee['phone_number'],
+                    'status' => Constants::ORDER_ITEM_STATUS_VALID,
+                    'qr_code' => $this->generateQrCode($order->order_number . $key),
+                ]);
+            }
+            // redirect to payment page
+            $payStackResponse = $this->paystack->initializeTransaction(
+                $ticket->price * intval($data['number_tickets']),
+                $attendee[0]['email'],
+                $orderNumberWIthPrefix,
+                $ticket->currency,
+                route('paystack.callback')
+            );
+
+            // Handle success response
+            if ($payStackResponse['status'] === true) {
+                DB::commit();
+                //    open the payment page
+                return redirect($payStackResponse['data']['authorization_url']);
+            } else {
+                Log::error('Error initializing payment: ' . json_encode($payStackResponse));
+                throw new \Exception('Error initializing payment');
+            }
+        } catch (\Throwable $th) {
+            Log::error($th);
+            DB::rollBack();
+            return redirect()->back()->with('error', $th->getMessage());
+        }
+    }
+
+    private function generateQrCode(string $data): string
+    {
+        // $logoPath = public_path('images/logo.png');
+        // read the file stream
+        // $logoPath = file_get_contents($logoPath);
+
+        $qr = QrCode::format('png')
+            ->size(300)
+            ->errorCorrection('H')
+            ->color(255, 0, 0)
+            ->generate($data);
+        // base64 encode the image
+        $qr = base64_encode($qr);
+        return $qr;
+    }
+
+    public function successfulPayment(Request $request)
+    {
+        return view('websites.successful-payment');
     }
 }

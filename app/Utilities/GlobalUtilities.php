@@ -43,19 +43,6 @@ class GlobalUtilities
         return $code;
     }
 
-    /**
-     * generate OrderNumber
-     * @return string
-     */
-    public static function generateOrderNumber(): string
-    {
-        return self::generateCode(Order::class, 'order_number', 'ORD');
-    }
-
-
-
-
-
 
     /**
      * Convert phone number to international format

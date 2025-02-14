@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('attendee_email')->nullable();
             $table->string('attendee_phone')->nullable();
             $table->enum('status', ['valid', 'used', 'cancelled', 'denied'])->default('valid');
-            $table->string('qr_code')->nullable();
+            $table->longText('qr_code')->nullable();
             $table->timestamp('checkin_time')->nullable();
             $table->foreignId('checkin_by')->nullable()->constrained('users');
             $table->longText('remarks')->nullable();

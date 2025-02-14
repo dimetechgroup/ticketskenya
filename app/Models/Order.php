@@ -14,16 +14,16 @@ class Order extends Model
     use HasFactory;
     protected $fillable = [
         'order_number',
-        'event_id', // Event for which tickets were purchased.
+        'ticket_id', // Event for which tickets were purchased.
         'total_amount',  //Total amount paid for the order.
         'currency', // Currency used for payment. : KES, USD, EUR
         'payment_status', // 'pending', 'successful', 'failed', 'refunded'
         'paystack_reference', // Payment unique code.
     ];
 
-    public function event(): BelongsTo
+    public function ticket(): BelongsTo
     {
-        return $this->belongsTo(Event::class);
+        return $this->belongsTo(Ticket::class);
     }
 
     public function payment(): HasOne
