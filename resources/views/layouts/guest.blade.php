@@ -43,7 +43,7 @@
                         <a class="nav-link" href="{{ url('/about') }}">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/contact') }}">Contact Us</a>
+                        <a class="nav-link" href="{{ url('/contact-us') }}">Contact Us</a>
                     </li>
                     <li class="nav-item">
                         <a class="btn btn-primary ms-2" href="{{ url('/login') }}">Add Event</a>
