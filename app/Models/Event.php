@@ -54,9 +54,4 @@ class Event extends Model
     {
         return $this->hasMany(Ticket::class);
     }
-
-    public function orders(): HasMany
-    {
-        return $this->hasMany(Order::class);
-    }
 }

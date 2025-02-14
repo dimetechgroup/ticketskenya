@@ -11,24 +11,24 @@
         <h2 class="text-center">{{ $event->name }}</h2>
         <p class="text-center">{{ $event->description }}</p>
         <hr>
-        <form action="{{ route('event.ticket.purchase', ['event' => $event->slug]) }}" method="POST" class="row">
+        <form action="{{ route('event.ticket.purchase', ['ticket' => $ticket->id]) }}" method="POST" class="row">
             @csrf
             <div class="col-md-8">
                 <div class="row">
                     <div class="mb-3 col-md-6">
-                        <label for="name" class="form-label">Your Name</label>
-                        <input type="text" name="name" id="name" class="form-control" placeholder="Full Name"
-                            required />
+                        <label for="name_0" class="form-label">Your Name</label>
+                        <input type="text" name="attendees[0][name]" id="name_0" class="form-control"
+                            value="{{ old('attendees.0.name') }}" placeholder="Full Name" required />
                     </div>
                     <div class="mb-3 col-md-6">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" name="email" id="email" class="form-control" placeholder="Email Address"
-                            required />
+                        <label for="email_0" class="form-label">Email</label>
+                        <input type="email" name="attendees[0][email]" id="email_0" class="form-control"
+                            value="{{ old('attendees.0.email') }}" placeholder="Email Address" required />
                     </div>
                     <div class="mb-3 col-md-6">
-                        <label for="phone_number" class="form-label">Phone Number</label>
-                        <input type="text" name="phone_number" id="phone_number" class="form-control"
-                            placeholder="Phone Number" required />
+                        <label for="phone_number_0" class="form-label">Phone Number</label>
+                        <input type="text" name="attendees[0][phone_number]" id="phone_number_0" class="form-control"
+                            value="{{ old('attendees.0.phone_number') }}" placeholder="Phone Number" required />
                     </div>
 
                     <div class="form-group col-md-6">
@@ -48,6 +48,7 @@
 
             {{-- Order Summary --}}
             <div class="col-md-4 order-md-2 mb-4 px-2 mt-3">
+
                 <div class="alert alert-info d-none" role="alert" id="has-discount">
                     You qualify for a discount! 🎉
                 </div>
@@ -138,11 +139,15 @@
                             <div class="row">
                                 <div class="col-md-4 mb-2">
                                     <label for="attendee_name_${i}" class="form-label">Full Name</label>
-                                    <input type="text" name="attendees[${i}][name]" class="form-control" required placeholder="Full Name">
+                                    <input type="text" name="attendees[${i}][name]" class="form-control"
+                                    value="{{ old('attendees.${i}.name') }}"
+                                    required placeholder="Full Name">
                                 </div>
                                 <div class="col-md-4 mb-2">
                                     <label for="attendee_email_${i}" class="form-label">Email</label>
-                                    <input type="email" name="attendees[${i}][email]" class="form-control" required placeholder="Email Address">
+                                    <input type="email" name="attendees[${i}][email]" class="form-control"
+                                    value="{{ old('attendees.${i}.email') }}"
+                                    required placeholder="Email Address">
                                 </div>
                                 <div class="col-md-4 mb-2">
                                     <label for="attendee_phone_${i}" class="form-label">Phone Number</label>

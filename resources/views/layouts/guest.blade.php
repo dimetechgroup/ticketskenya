@@ -18,7 +18,8 @@
     @yield('styles')
 </head>
 
-<body>
+<body class="wrapper">
+    <x-messages />
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
