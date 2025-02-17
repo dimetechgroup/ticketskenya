@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Ticket</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="flex justify-center items-center min-h-screen ">
+    <div class="bg-white shadow-2xl rounded-2xl max-w-md w-full p-8 border border-gray-200 relative">
+
+        <!-- Header -->
+        <div class="text-center pb-4 border-b">
+            <h2 class="text-2xl font-extrabold text-gray-800">🎟 Event Ticket</h2>
+            <p class="text-lg font-semibold text-gray-700">Event Name</p>
+            <p class="text-sm text-gray-500">📍 Venue: <span class="font-medium">Venue Name</span></p>
+            <p class="text-sm text-gray-500">📅 Date: <span class="font-medium">Start Date</span></p>
+        </div>
+
+        <!-- Ticket Information -->
+        <div class="py-4 border-b flex justify-between">
+            <p class="text-sm text-gray-600">🎫 Ticket Type:</p>
+            <span class="font-bold text-blue-600">VIP</span>
+        </div>
+
+        <!-- Order Details -->
+        <div class="py-4 border-b flex justify-between">
+            <p class="text-sm text-gray-600">🆔 Order No: <span class="font-bold text-gray-800">#123456</span></p>
+            <p class="text-sm text-gray-600">💳 Payment Status: <span class="font-bold text-green-500">Paid</span></p>
+        </div>
+
+        <!-- Attendee Details -->
+        <div class="py-4 border-b flex justify-between">
+            <p class="text-sm text-gray-600">👤 Name: <span class="font-bold text-gray-800">John Doe</span></p>
+            <p class="text-sm text-gray-600">✉️ Email: <span class="font-bold text-gray-800">johndoe@example.com</span>
+            </p>
+        </div>
+
+        <!-- QR Code -->
+        <div class="flex flex-col items-center mt-6">
+            <div class="bg-white p-2 rounded-lg shadow-md">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=JohnDoeTicket" alt="QR Code"
+                    class="w-28 h-28">
+            </div>
+            <p class="text-xs text-gray-500 mt-2">Scan to validate entry</p>
+        </div>
+    </div>
+</body>
+
+</html>

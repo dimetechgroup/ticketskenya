@@ -16,17 +16,17 @@
             <div class="col-md-8">
                 <div class="row">
                     <div class="mb-3 col-md-6">
-                        <label for="name_0" class="form-label">Your Name</label>
+                        <label for="name_0" class="form-label required">Your Name</label>
                         <input type="text" name="attendees[0][name]" id="name_0" class="form-control"
                             value="{{ old('attendees.0.name') }}" placeholder="Full Name" required />
                     </div>
                     <div class="mb-3 col-md-6">
-                        <label for="email_0" class="form-label">Email</label>
+                        <label for="email_0" class="form-label required">Email</label>
                         <input type="email" name="attendees[0][email]" id="email_0" class="form-control"
                             value="{{ old('attendees.0.email') }}" placeholder="Email Address" required />
                     </div>
                     <div class="mb-3 col-md-6">
-                        <label for="phone_number_0" class="form-label">Phone Number</label>
+                        <label for="phone_number_0" class="form-label required">Phone Number</label>
                         <input type="text" name="attendees[0][phone_number]" id="phone_number_0" class="form-control"
                             value="{{ old('attendees.0.phone_number') }}" placeholder="Phone Number" required />
                     </div>
@@ -138,7 +138,7 @@
                             <h6>Attendee ${i + 1}</h6>
                             <div class="row">
                                 <div class="col-md-4 mb-2">
-                                    <label for="attendee_name_${i}" class="form-label">Full Name</label>
+                                    <label for="attendee_name_${i}" class="form-label required">Full Name</label>
                                     <input type="text" name="attendees[${i}][name]" class="form-control"
                                     value="{{ old('attendees.${i}.name') }}"
                                     required placeholder="Full Name">

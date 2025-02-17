@@ -10,11 +10,12 @@ use App\Models\Ticket;
 use App\Utilities\Constants;
 use App\Utilities\GlobalUtilities;
 use App\Utilities\PDFHandler;
+use Da\QrCode\QrCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PageController extends Controller
 {
@@ -63,7 +64,14 @@ class PageController extends Controller
 
     public function purchaseTicket(TicketPurchaserequest $request, Ticket $ticket)
     {
+        // display all php extensions installed
+        // dd(phpinfo());
+        // dd(get_loaded_extensions());
+
         $data = $request->validated();
+        // generate qr code
+
+
         DB::beginTransaction();
         try {
             $orderNumber = GlobalUtilities::generateCode(Order::class, 'order_number', "ORD");
@@ -94,10 +102,14 @@ class PageController extends Controller
                     'qr_code' => $this->generateQrCode($order->order_number . $key),
                 ]);
             }
+            // get the first attendee
+            $attendee = $data['attendees'][0];
+            $total = $ticket->price * intval($data['number_tickets']) + $ticket->event->processing_fee;
+
             // redirect to payment page
             $payStackResponse = $this->paystack->initializeTransaction(
-                $ticket->price * intval($data['number_tickets']),
-                $attendee[0]['email'],
+                $total,
+                $attendee['email'],
                 $orderNumberWIthPrefix,
                 $ticket->currency,
                 route('paystack.callback')
@@ -109,8 +121,8 @@ class PageController extends Controller
                 //    open the payment page
                 return redirect($payStackResponse['data']['authorization_url']);
             } else {
-                Log::error('Error initializing payment: ' . json_encode($payStackResponse));
-                throw new \Exception('Error initializing payment');
+                Log::error($payStackResponse);
+                throw new \Exception($payStackResponse['message']);
             }
         } catch (\Throwable $th) {
             Log::error($th);
@@ -121,18 +133,15 @@ class PageController extends Controller
 
     private function generateQrCode(string $data): string
     {
-        // $logoPath = public_path('images/logo.png');
-        // read the file stream
-        // $logoPath = file_get_contents($logoPath);
-
-        $qr = QrCode::format('png')
-            ->size(300)
-            ->errorCorrection('H')
-            ->color(255, 0, 0)
-            ->generate($data);
-        // base64 encode the image
-        $qr = base64_encode($qr);
-        return $qr;
+        $qrCode = (new QrCode($data))
+            ->setSize(250)
+            ->setMargin(5)
+            ->setBackgroundColor(51, 153, 255);
+        // generate unique file name
+        $fileName = 'qr-code-' . time() . '.png';
+        // save the qr code
+        $pathName = Storage::disk('public')->put('qr-codes/' . $fileName, $qrCode->writeString());
+        return $pathName;
     }
 
     public function successfulPayment(Request $request)

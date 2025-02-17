@@ -34,7 +34,7 @@
                         <tr>
                             <th>Title</th>
                             <th>Price</th>
-                            <th>Quantity</th>
+                            <th>Available Tickets</th>
                             <th></th>
                         </tr>
                     </thead>

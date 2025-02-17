@@ -15,4 +15,5 @@ setTimeout(flash, 6400);
 
 $(document).on("click", ".close", function () {
     $("#message").css("animation-duration", "2s").hide();
+    alert("hello");
 });
