@@ -106,30 +106,41 @@ class EventController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Event $event)
+    public function show(string $slug)
     {
-        $event->load(['user:id,name,email,phone_number,role', 'tickets', 'orders'])
-            ->loadCount('tickets', 'orders');
+        $event = Event::where('slug', $slug)->with([
+            'user:id,name,email,phone_number,role',
+            'tickets',
+            'orders' => function ($query) {
+                $query->select('orders.order_number', 'orders.id', 'orders.total_amount', 'orders.payment_status', 'orders.ticket_id');
+            }
+        ])->firstOrFail();
 
-        $ticketsSold = OrderItem::whereHas('ticket', function ($query) use ($event) {
-            $query->where('event_id', $event->id);
-        })->sum('quantity');
+        // Calculate required metrics efficiently
+        $ordersIds = $event->orders->pluck('id');  // Using already loaded orders
 
-        $totalRevenue = Order::where('event_id', $event->id)
-            ->where('payment_status', 'successful')
+        $ticketsSold = $event->tickets->sum('sold_quantity');
+
+        $totalRevenue = $event->orders
+            ->where('payment_status', Constants::PAYMENT_STATUS_SUCCESSFUL)
             ->sum('total_amount');
 
-        $attendeesCheckedIn = OrderItem::whereHas('ticket', function ($query) use ($event) {
-            $query->where('event_id', $event->id);
-        })->whereNotNull('checkin_time')->count();
-        $totalAttendees =
-            OrderItem::whereHas('ticket', function ($query) use ($event) {
-                $query->where('event_id', $event->id);
-            })->count();
+        $attendeesCheckedIn = OrderItem::whereIn('order_id', $ordersIds)
+            ->whereNotNull('checkin_time')
+            ->count();
 
+        $totalAttendees = OrderItem::whereIn('order_id', $ordersIds)
+            ->count();
 
-        return view('admins.events.show', compact('event', 'ticketsSold', 'totalRevenue', 'attendeesCheckedIn', 'totalAttendees'));
+        return view('admins.events.show', compact(
+            'event',
+            'ticketsSold',
+            'totalRevenue',
+            'attendeesCheckedIn',
+            'totalAttendees'
+        ));
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -184,15 +195,36 @@ class EventController extends Controller
      * @param Event $event
      *
      */
-    public function attendees(int $eventId): View
+    /**
+     * Display attendees for a specific event
+     *
+     * @param int $eventId
+     * @return \Illuminate\View\View
+     */
+    public function attendees(int $eventId)
     {
-        $event = Event::with([
-            'orders.orderItems.ticket',
-            'orders.orderItems.checkinBy'
-        ])->findOrFail($eventId);
+        $event = Event::findOrFail($eventId);
+        $tickets = $event->tickets()->with([
+            'orders' => function ($query) {
+                $query->with([
+                    'orderItems' => function ($query) {
+                        $query->select('id', 'order_id', 'ticket_id', 'attendee_name', 'attendee_email', 'attendee_phone', 'status', 'checkin_time');
+                    },
+                    'orderItems.ticket:id,name'
+                ])->select('id', 'order_number', 'payment_status');
+            }
+        ])->get();
 
-        return view('admins.events.attendees', compact('event'));
+        $orderItems = OrderItem::whereIn('ticket_id', $tickets->pluck('id'))->get();
+        $total_attendees = $orderItems->count();
+        $checkinCount = $orderItems->whereNotNull('checkin_time')->count();
+        $yetToCheckinCount = $total_attendees - $checkinCount;
+
+
+
+        return view('admins.events.attendees', compact('event', 'checkinCount', 'yetToCheckinCount', 'total_attendees'));
     }
+
     public function checkInAttendee($id)
     {
         $attendee = OrderItem::findOrFail($id);

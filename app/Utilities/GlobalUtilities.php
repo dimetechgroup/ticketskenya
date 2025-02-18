@@ -21,6 +21,11 @@ class GlobalUtilities
         return null; // Return null if file doesn't exist
     }
 
+    public static function getImageStoragePath($imagePath): string
+    {
+        return storage_path('app/public/' . $imagePath);
+    }
+
 
 
     /**

@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Services\PayStackService;
 use App\Models\Order;
+use App\Models\OrderItem;
+use App\Notifications\TicketEvent;
 use App\Utilities\Constants;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 
 class PayStackController extends Controller
 {
@@ -19,9 +23,13 @@ class PayStackController extends Controller
     public function paystackCallBack(Request $request)
     {
 
-        $reference = $request->input('reference');
+
+
+
+        DB::beginTransaction();
 
         try {
+            $reference = $request->input('reference');
             // verify transaction
             $response = $this->paystack->verifyTransaction($reference);
             Log::info('Paystack Verify Transaction: ');
@@ -35,14 +43,17 @@ class PayStackController extends Controller
             $data = $response['data'];
 
 
-
             // Check if $clientInvoiceRef is for order or subscription
             $order = Order::query()->where('paystack_reference', $reference)->firstOrFail();
             $order->payment_status = Constants::PAYMENT_STATUS_SUCCESSFUL;
             $order->save();
+
+            // update ticket sold_quantity
+            $ticket = $order->ticket()->increment('sold_quantity', count($order->orderItems));
+
             // save payment details
             $payment = $order->payment()->create([
-                'amount' => $data['amount'] / Constants::KOBO_CURRENCY,
+                'amount' => ($data['amount'] / Constants::KOBO_CURRENCY),
                 'currency' => $data['currency'],
                 'payment_status' => Constants::PAYMENT_STATUS_SUCCESSFUL,
                 'paystack_reference' => $data['reference'],
@@ -54,12 +65,20 @@ class PayStackController extends Controller
             ]);
 
             // Send email to the attendees with the ticket
+            foreach ($order->orderItems as $key => $orderItem) {
+                $orderItem->status = Constants::ORDER_ITEM_STATUS_VALID;
+                $orderItem->save();
+                Notification::route('mail', $orderItem->attendee_email)->notify(new TicketEvent($orderItem));
+            }
 
+
+            DB::commit();
 
             return redirect()->route('successful.payment')->with('success', 'Payment processed successfully');
         } catch (\Throwable $th) {
+            DB::rollBack();
             Log::error($th);
-            return redirect()->route('successful.payment')->with('error', 'Error processing payment');
+            return redirect()->route('landing.page')->with('error', 'Error processing payment');
         }
     }
 }

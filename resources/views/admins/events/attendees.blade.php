@@ -22,7 +22,7 @@
                     <div class="card border-primary shadow-sm">
                         <div class="card-body">
                             <h5 class="card-title text-primary">Total Attendees</h5>
-                            <p class="display-6 fw-bold">{{ $event->orders->sum('orderItems.quantity') }}</p>
+                            <p class="display-6 fw-bold">{{ $total_attendees }}</p>
                         </div>
                     </div>
                 </div>
@@ -59,15 +59,13 @@
                     </div>
 
                     <div class="table-responsive">
-                        <table class="table table-hover align-middle">
+                        <table class="table table-hover table-bordered align-middle">
                             <thead class="table-primary">
-                                <tr class="text-center text-uppercase text-muted">
-                                    <th>#</th>
+                                <tr class=" text-uppercase text-muted">
+
                                     <th>Attendee</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
+                                    <th>Order</th>
                                     <th>Ticket</th>
-                                    <th>Quantity</th>
                                     <th>Status</th>
                                     <th>Check-In Time</th>
                                     <th>Actions</th>
@@ -77,22 +75,40 @@
                                 @forelse ($event->orders as $order)
                                     @foreach ($order->orderItems as $index => $attendee)
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $attendee->attendee_name }}</td>
-                                            <td>{{ $attendee->attendee_email }}</td>
-                                            <td>{{ $attendee->attendee_phone }}</td>
-                                            <td>{{ $attendee->ticket->name }}</td>
-                                            <td>{{ $attendee->quantity }}</td>
                                             <td>
-                                                @if ($attendee->status === 'valid')
-                                                    <span class="badge bg-success">Valid</span>
-                                                @elseif ($attendee->status === 'used')
-                                                    <span class="badge bg-primary">Checked In</span>
-                                                @elseif ($attendee->status === 'cancelled')
-                                                    <span class="badge bg-danger">Cancelled</span>
+                                                <div> {{ $attendee->attendee_name }}</div>
+                                                <div>
+                                                    <small
+                                                        class="text-muted fw-light">{{ $attendee->attendee_email }}</small>
+                                                </div>
+                                                <div>
+                                                    <small
+                                                        class="text-muted fw-light">{{ $attendee->attendee_phone }}</small>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                {{ $order->order_number }}
+                                            </td>
+
+                                            <td>{{ $attendee->ticket->name }}</td>
+                                            <td>
+                                                {{-- check if order is paid  --}}
+                                                @if ($order->payment_status === 'successful')
+                                                    @if ($attendee->status === 'valid')
+                                                        <span class="badge bg-success">Valid</span>
+                                                    @elseif ($attendee->status === 'used')
+                                                        <span class="badge bg-primary">Checked In</span>
+                                                    @elseif ($attendee->status === 'cancelled')
+                                                        <span class="badge bg-danger">Cancelled</span>
+                                                    @else
+                                                        <span class="badge bg-warning">Pending</span>
+                                                    @endif
                                                 @else
-                                                    <span class="badge bg-warning">Pending</span>
+                                                    <span class="badge bg-danger">Unpaid</span>
                                                 @endif
+
+
+
                                             </td>
                                             <td>
                                                 @if ($attendee->checkin_time)
@@ -102,16 +118,11 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                @if (!$attendee->checkin_time)
-                                                    <button class="btn btn-success btn-sm checkin-btn"
-                                                        data-id="{{ $attendee->id }}">
-                                                        <i class="fas fa-check"></i> Check In
-                                                    </button>
-                                                @else
-                                                    <button class="btn btn-outline-secondary btn-sm" disabled>
-                                                        <i class="fas fa-check-double"></i> Checked In
-                                                    </button>
-                                                @endif
+
+                                                <a href="{{ route('attendees.download-ticket', $attendee) }}"
+                                                    class="btn btn-primary btn-sm">
+                                                    <i class="fas fa-download"></i> Download Ticket
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -146,31 +157,7 @@
                 });
             });
 
-            // Check-in Button Click Event
-            document.querySelectorAll(".checkin-btn").forEach(button => {
-                button.addEventListener("click", function() {
-                    let attendeeId = this.getAttribute("data-id");
 
-                    fetch(`/events/attendees/checkin/${attendeeId}`, {
-                            method: "POST",
-                            headers: {
-                                "X-CSRF-TOKEN": document.querySelector(
-                                    'meta[name="csrf-token"]').getAttribute("content"),
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({})
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                alert("Attendee checked in successfully!");
-                                location.reload();
-                            } else {
-                                alert("Check-in failed. Please try again.");
-                            }
-                        });
-                });
-            });
         });
     </script>
 @endsection

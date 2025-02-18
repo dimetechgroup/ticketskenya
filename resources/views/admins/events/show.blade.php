@@ -1,3 +1,4 @@
+{{-- resources/views/admins/events/show.blade.php --}}
 @extends('layouts.app')
 
 @section('styles')
@@ -128,7 +129,7 @@
                             </div>
                             <div class="col-6">
                                 <div class="card-statistics">
-                                    <h5>{{ $event->tickets->sum('available_qty') - $ticketsSold }}</h5>
+                                    <h5>{{ $event->tickets()->sum('quantity') - $ticketsSold }}</h5>
                                     <p>Tickets Left</p>
                                 </div>
                             </div>
@@ -146,7 +147,7 @@
                             </div>
                             <div class="col-12 mt-3">
                                 <div class="card-statistics">
-                                    <h5>${{ number_format($totalRevenue, 2) }}</h5>
+                                    <h5>{{ $event->currency . ' ' . number_format($totalRevenue, 2) }}</h5>
                                     <p>Total Revenue</p>
                                 </div>
                             </div>
@@ -217,7 +218,6 @@
                                     <tr>
                                         <th>order_number</th>
                                         <th>Total Amount</th>
-                                        <th>Currency</th>
                                         <th>Payment Status</th>
                                         <th>Tickets</th>
                                     </tr>
@@ -226,8 +226,7 @@
                                     @foreach ($event->orders as $order)
                                         <tr>
                                             <td>{{ $order->order_number }}</td>
-                                            <td>{{ $order->total_amount }}</td>
-                                            <td>{{ $order->currency }}</td>
+                                            <td>{{ $order->currency . ' ' . $order->total_amount }}</td>
                                             <td>{{ $order->payment_status }}</td>
                                             <td>
                                                 {{ $order->orderItems->count() }}

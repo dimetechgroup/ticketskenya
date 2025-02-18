@@ -6,6 +6,7 @@ use App\Http\Requests\TicketPurchaserequest;
 use App\Http\Services\PayStackService;
 use App\Models\Event;
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Ticket;
 use App\Utilities\Constants;
 use App\Utilities\GlobalUtilities;
@@ -33,12 +34,11 @@ class PageController extends Controller
         $events = Event::query()
             ->select(['id', 'slug', 'image', 'name', 'start_date', 'venue'])
             ->where('is_private', 0)
-            ->orderByDesc('start_date')
-            ->get();
+            ->orderByDesc('start_date');
 
         // Separate future & past events
-        $current_future_events = $events->where('start_date', '>=', now());
-        $past_events = $events->where('start_date', '<', now());
+        $current_future_events = $events->where('start_date', '>=', now())->get();
+        $past_events = $events->where('start_date', '<', now())->get();
 
         return view('websites.welcome', compact('current_future_events', 'past_events'));
     }
@@ -135,17 +135,25 @@ class PageController extends Controller
     {
         $qrCode = (new QrCode($data))
             ->setSize(250)
-            ->setMargin(5)
-            ->setBackgroundColor(51, 153, 255);
+            ->setMargin(5);
         // generate unique file name
         $fileName = 'qr-code-' . time() . '.png';
-        // save the qr code
-        $pathName = Storage::disk('public')->put('qr-codes/' . $fileName, $qrCode->writeString());
+        $pathName = 'qr-codes/' . $fileName;
+        Storage::disk('public')->put($pathName, $qrCode->writeString());
         return $pathName;
     }
 
     public function successfulPayment(Request $request)
     {
         return view('websites.successful-payment');
+    }
+
+    public function downloadTicket(int $orderItemId)
+    {
+        $orderItem = OrderItem::query()->with(['ticket.event'])->findOrFail($orderItemId);
+        $view = view('pdfs.eventTicket', compact('orderItem'))->render();
+
+        $fileName = $orderItem->order->order_number . '-' . $orderItem->id;
+        return $this->downloadPDF($view, $fileName);
     }
 }

@@ -3,22 +3,19 @@
 namespace App\Utilities;
 
 use Illuminate\Support\Str;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
 
-use Barryvdh\DomPDF\PDF  as ThePDF;
 
 trait PDFHandler
 {
     /**
      * Download PDF.
      *
-     * @param  string  $html
-     * @param  string  $fileName
      * @return \Illuminate\Http\Response
      */
-    protected function downloadPDF(string $html, ?string $fileName = null,  ?string $password = null): ThePDF
+    protected function downloadPDF(string $html, ?string $fileName = null)
     {
         if (is_null($fileName)) {
             $fileName = Str::random(32);
@@ -26,21 +23,53 @@ trait PDFHandler
 
         $html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
 
-        $pdf = PDF::loadHTML($html)
-            ->setPaper('a4')
-            ->setWarnings(false)
+
+        return PDF::loadHTML($html)
+            ->setPaper('a5', 'portrait')
             ->setOptions([
                 'isPhpEnabled' => true,
                 'isRemoteEnabled' => true,
                 'isHtml5ParserEnabled' => true,
                 'isJavascriptEnabled' => true,
-            ]);
-        if (!is_null($password)) {
-            $pdf->setEncryption($password);
-        }
-        $pdf->download($fileName . '.pdf');
-        return $pdf;
+            ])
+            ->setOption('margin-top', 0)
+            ->setOption('margin-bottom', 0)
+            ->setOption('margin-left', 10)
+            ->setOption('margin-right', 10)
+
+            ->download($fileName . '.pdf');
     }
+
+    /**
+     * Download PDF.
+     *
+     * @param  string  $html
+     * @param  string  $fileName
+     * @return \Illuminate\Http\Response
+     */
+    // protected function downloadPDF(string $html, ?string $fileName = null,  ?string $password = null)
+    // {
+    //     if (is_null($fileName)) {
+    //         $fileName = Str::random(32);
+    //     }
+
+    //     $html = mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8');
+
+    //     $pdf = PDF::loadHTML($html)
+    //         ->setPaper('a4')
+    //         ->setWarnings(false)
+    //         ->setOptions([
+    //             'isPhpEnabled' => true,
+    //             'isRemoteEnabled' => true,
+    //             'isHtml5ParserEnabled' => true,
+    //             'isJavascriptEnabled' => true,
+    //         ]);
+    //     if (!is_null($password)) {
+    //         $pdf->setEncryption($password);
+    //     }
+    //     $pdf->download($fileName . '.pdf');
+    //     return $pdf;
+    // }
 
     /**
      * Save PDF.
@@ -66,7 +95,11 @@ trait PDFHandler
                 'isRemoteEnabled' => true,
                 'isHtml5ParserEnabled' => true,
                 'isJavascriptEnabled' => true,
-            ]);
+            ])
+            ->setOption('margin-top', 0)
+            ->setOption('margin-bottom', 0)
+            ->setOption('margin-left', 10)
+            ->setOption('margin-right', 10);
 
         if (is_null($path)) {
             $path = Storage::disk(config('filesystems.default'))->path('pdf');
