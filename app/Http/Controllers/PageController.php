@@ -37,8 +37,8 @@ class PageController extends Controller
             ->orderByDesc('start_date');
 
         // Separate future & past events
-        $current_future_events = $events->where('start_date', '>=', now())->get();
-        $past_events = $events->where('start_date', '<', now())->get();
+        $current_future_events = $events->where('end_date', '>=', now())->get();
+        $past_events = $events->where('end_date', '<', now())->get();
 
         return view('websites.welcome', compact('current_future_events', 'past_events'));
     }

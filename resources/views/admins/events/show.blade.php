@@ -53,7 +53,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
-                                <form action="{{ route('events.status', $event->id) }}" method="POST">
+                                <form action="{{ route('events.status', $event->slug) }}" method="POST">
                                     <div class="modal-body">
                                         {{--  --}}
 

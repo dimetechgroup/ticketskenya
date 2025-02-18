@@ -33,7 +33,7 @@ class TicketController extends Controller
         $data = $request->validated();
         $event->tickets()->create($data);
 
-        return redirect()->route('events.show', $event)->with('success', 'Ticket created successfully');
+        return redirect()->route('events.show', $event->slug)->with('success', 'Ticket created successfully');
     }
 
     /**
@@ -60,7 +60,7 @@ class TicketController extends Controller
         $data = $request->validated();
         $ticket->update($data);
 
-        return redirect()->route('events.show', $event)->with('success', 'Ticket updated successfully');
+        return redirect()->route('events.show', $event->slug)->with('success', 'Ticket updated successfully');
     }
 
     /**

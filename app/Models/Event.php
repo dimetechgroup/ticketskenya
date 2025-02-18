@@ -14,6 +14,9 @@ class Event extends Model
     /** @use HasFactory<\Database\Factories\EventFactory> */
     use HasFactory, SoftDeletes;
 
+    protected $table = 'events';
+    protected $primaryKey = 'id';
+
 
     protected $fillable = [
         'slug',
@@ -40,6 +43,7 @@ class Event extends Model
         'is_private' => 'boolean',
         'status'     => 'string',
     ];
+
 
     // return event image url
     public function getImageUrlAttribute(): string

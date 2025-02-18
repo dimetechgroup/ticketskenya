@@ -182,9 +182,10 @@ class EventController extends Controller
         return redirect()->route('events.index')->with('success', 'Event deleted successfully');
     }
 
-    public function updateStatus(UpdateEventStatusRequest $request, Event $event)
+    public function updateStatus(UpdateEventStatusRequest $request, string $eventSlug)
     {
         $data = $request->validated();
+        $event = Event::where('slug', $eventSlug)->firstOrFail();
         $event->update($data);
 
         return redirect()->route('events.show', $event->id)->with('success', 'Event status updated successfully');
