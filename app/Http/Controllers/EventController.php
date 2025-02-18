@@ -163,7 +163,7 @@ class EventController extends Controller
 
         $event->update($data);
 
-        return redirect()->route('events.show', $event->id)->with('success', 'Event updated successfully');
+        return redirect()->route('events.show', $event->slug)->with('success', 'Event updated successfully');
     }
 
     /**
@@ -188,7 +188,7 @@ class EventController extends Controller
         $event = Event::where('slug', $eventSlug)->firstOrFail();
         $event->update($data);
 
-        return redirect()->route('events.show', $event->id)->with('success', 'Event status updated successfully');
+        return redirect()->route('events.show', $event->slug)->with('success', 'Event status updated successfully');
     }
 
     /***
