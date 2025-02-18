@@ -159,6 +159,8 @@ class PageController extends Controller
         $orderItem = OrderItem::query()->with(['ticket.event'])->findOrFail($orderItemId);
         $view = view('pdfs.eventTicket', compact('orderItem'))->render();
 
+        // return $view;
+
         $fileName = $orderItem->order->order_number . '-' . $orderItem->id;
         return $this->downloadPDF($view, $fileName);
     }

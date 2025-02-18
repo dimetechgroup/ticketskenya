@@ -25,7 +25,8 @@ trait PDFHandler
 
 
         return PDF::loadHTML($html)
-            ->setPaper('a5', 'portrait')
+            // paper size landscape A6  in pixels 595.276 x 841.89
+            ->setPaper("a5", 'landscape')
             ->setOptions([
                 'isPhpEnabled' => true,
                 'isRemoteEnabled' => true,
