@@ -62,9 +62,10 @@
             left: 0;
             top: 0;
             width: 220px;
-            height: 100%;
+            height: auto;
             border-radius: 10px;
             object-fit: cover;
+            object-position: center;
 
         }
 
