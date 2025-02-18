@@ -89,7 +89,7 @@ class PageController extends Controller
             ]);
             // order item
             foreach ($data['attendees'] as $key => $attendee) {
-                $order->orderItems()->create([
+                $orderItem =  $order->orderItems()->create([
 
                     'ticket_id' => $ticket->id,
                     'quantity' => 1,
@@ -99,8 +99,14 @@ class PageController extends Controller
                     'attendee_email' => $attendee['email'],
                     'attendee_phone' => $attendee['phone_number'],
                     'status' => Constants::ORDER_ITEM_STATUS_VALID,
-                    'qr_code' => $this->generateQrCode($order->order_number . $key),
                 ]);
+
+                $encodedOrderId = encrypt($order->id);
+                // event.attendees.checkin
+                $url = route('event.attendees.checkin', $encodedOrderId);
+
+                $orderItem->qr_code = $this->generateQrCode($url);
+                $orderItem->save();
             }
             // get the first attendee
             $attendee = $data['attendees'][0];
