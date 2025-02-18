@@ -34,9 +34,11 @@
 @section('content')
     <div class="content">
         <div class="container-fluid">
-            <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex justify-content-between align-items-center pb-4">
                 <h4 class="page-title">Event Details</h4>
                 <div>
+                    <a href="{{ route('events.attendees', ['event' => $event]) }}" class="btn btn-primary">View All
+                        Attendees</a>
                     {{-- model to change ticket status --}}
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ststusChange">
@@ -208,8 +210,7 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between">
                             <h5>Orders</h5>
-                            <a href="{{ route('events.attendees', ['event' => $event]) }}" class="btn btn-primary">View All
-                                Attendees</a>
+
                         </div>
                         <div class="card-body">
 

@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\User;
 use App\Utilities\Constants;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -226,14 +227,50 @@ class EventController extends Controller
         return view('admins.events.attendees', compact('event', 'checkinCount', 'yetToCheckinCount', 'total_attendees'));
     }
 
-    public function checkInAttendee($id)
+    public function checkInAttendee(string $encodedOrderId)
     {
-        $attendee = OrderItem::findOrFail($id);
+        $orderId = decrypt($encodedOrderId);
+        $attendee = OrderItem::findOrFail($orderId);
+        $ticket = $attendee->ticket;
+        $event = $ticket->event;
+
+        if ($attendee->checkin_time) {
+            return $this->checkInResponse(false, 'Attendee has already been checked in', $attendee);
+        }
+
+        if ($ticket->order->payment_status == Constants::PAYMENT_STATUS_PENDING) {
+            return $this->checkInResponse(false, 'Attendee ticket has not been paid for', $attendee);
+        }
+
+        if ($event->status != Constants::EVENT_STATUS_APPROVED) {
+            return $this->checkInResponse(false, 'Event is not ongoing', $attendee);
+        }
+
+        if ($event->start_date > now()) {
+            return $this->checkInResponse(false, 'Event has not started yet', $attendee);
+        }
+
+        if ($event->end_date < now()) {
+            return $this->checkInResponse(false, 'Event has ended', $attendee);
+        }
+
+        // Perform check-in
         $attendee->update([
             'checkin_time' => now(),
-            'status' => 'used'
+            'checkin_by' => Auth::id()
         ]);
 
-        return response()->json(['success' => true]);
+        return $this->checkInResponse(true, 'Attendee ' . $attendee->attendee_name . ' checked in successfully', $attendee);
+    }
+
+    /**
+     * Helper function to return check-in response.
+     */
+    private function checkInResponse(bool $status, string $message, $attendee)
+    {
+        return view('admins.events.checkInResult', [
+            'attendee' => $attendee,
+            'result' => compact('status', 'message')
+        ]);
     }
 }
