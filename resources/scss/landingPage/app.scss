@@ -1,13 +1,37 @@
 // resources/scss/landingPage/app.scss
 @import "bootstrap/scss/bootstrap";
+@import "@fortawesome/fontawesome-free/css/all.min.css";
 
 // Variables for colors and fonts
-$primary-color: #42A26C;
+$primary-color: #42a26c;
 $secondary-color: #dcdcdc;
-$hover-color: #ffba00;
+$hover-color: #164128;
 $dark-overlay: rgba(0, 0, 0, 0.6);
 $button-radius: 30px;
 $font-weight-bold: bold;
+// Variables
+$card-color: #007bff;
+$success-color: #28a745;
+$dark-color: #333;
+$bg-pattern: "../../../public/images/icon-color-box-bg01.svg";
+$bg-main: "../../../public/images/why-us-bg.png";
+
+.wrapper {
+    position: relative;
+}
+#message {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 9000;
+    width: 300px;
+}
+
+.required::after {
+    content: "*";
+    color: red;
+    margin-left: 5px;
+}
 
 // Footer Styles
 .footer {
@@ -48,7 +72,7 @@ $font-weight-bold: bold;
 
 // Hero Section Styles
 .heroSection {
-    background: url('../../../public/images/hero-bg.jpg') center/cover no-repeat;
+    background: url("../../../public/images/hero-bg.jpg") center/cover no-repeat;
     height: 60vh; // Full height minus navbar
     display: flex;
     align-items: center;
@@ -92,33 +116,275 @@ $font-weight-bold: bold;
         margin-bottom: 2rem;
         opacity: 0.9;
     }
+}
 
-    .hero-btn {
-        font-size: 1.2rem;
-        padding: 0.75rem 1.5rem;
-        border-radius: $button-radius;
-        transition: all 0.3s ease-in-out;
+.circle-wrapper {
+    position: relative;
+}
+.large-circle {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-color: $hover-color;
+    position: absolute;
+}
+.small-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: $primary-color;
+    position: absolute;
+    top: 75px;
+    left: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 1.5rem;
+}
 
-        &.btn-primary {
-            background-color: $primary-color;
-            border: none;
-            color: #000;
-            font-weight: $font-weight-bold;
+.testimonials-section {
+    padding: 4rem 0;
 
-            &:hover {
-                background-color: $hover-color;
-                transform: translateY(-3px);
-            }
+    .image-wrapper {
+        position: relative;
+        .bg-image {
+            width: 100%;
+            border-radius: 50%;
+            filter: brightness(95%);
         }
 
-        &.btn-outline-light {
-            border: 2px solid white;
-            color: white;
+        .testimonial-img {
+            position: absolute;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .img1 {
+            top: 10%;
+            left: 70%;
+        }
+        .img2 {
+            top: 30%;
+            left: 10%;
+        }
+        .img3 {
+            top: 50%;
+            left: 50%;
+        }
+        .img4 {
+            bottom: 10%;
+            left: 20%;
+        }
+        .img5 {
+            bottom: 20%;
+            right: 10%;
+        }
+    }
+
+    h6 {
+        font-weight: bold;
+        text-transform: uppercase;
+        color: $primary-color;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+    }
+
+    .testimonial-quote {
+        font-style: italic;
+        color: #555;
+    }
+
+    .testimonial-author {
+        color: #333;
+        font-weight: bold;
+    }
+}
+
+.hero-btn {
+    font-size: 1.2rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: $button-radius;
+    transition: all 0.3s ease-in-out;
+
+    &.btn-primary {
+        background-color: $primary-color;
+        border: none;
+        color: #000;
+        font-weight: $font-weight-bold;
+
+        &:hover {
+            background-color: $hover-color;
+            transform: translateY(-3px);
+        }
+    }
+
+    &.btn-outline-light {
+        border: 2px solid white;
+        color: white;
+
+        &:hover {
+            background-color: white;
+            color: #000;
+            transform: translateY(-3px);
+        }
+    }
+}
+
+// Mixin for card styles
+@mixin card-style($bg-color) {
+    background-image: url($bg-pattern);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: $bg-color;
+}
+
+// Why Choose Us Section
+.whyChooseUs {
+    background: url($bg-main) no-repeat center bottom / cover;
+    padding: 80px 0;
+    position: relative;
+    color: #000;
+
+    h6 {
+        font-size: 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+
+    // Custom Cards
+    .card-custom {
+        border: none;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        color: white;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        height: 300px;
+        display: flex;
+        justify-content: end;
+        align-items: flex-end;
+
+        h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 0.95rem;
+            margin-top: 10px;
+        }
+    }
+
+    // Card Color Variants
+    .card-blue {
+        @include card-style($card-color);
+    }
+
+    .card-green {
+        @include card-style($success-color);
+    }
+
+    .card-black {
+        @include card-style($dark-color);
+    }
+}
+
+.btn-custom-primary {
+    font-size: 1.2rem;
+    padding: 0.55rem 1.2rem;
+    border-radius: $button-radius;
+    transition: all 0.3s ease-in-out;
+
+    &.btn-primary {
+        background-color: $primary-color;
+        border: none;
+        color: white;
+        font-weight: $font-weight-bold;
+
+        &:hover {
+            background-color: $hover-color;
+            transform: translateY(-3px);
+        }
+    }
+
+    &.btn-outline-light {
+        border: 2px solid white;
+        color: white;
+
+        &:hover {
+            background-color: white;
+            color: #000;
+            transform: translateY(-3px);
+        }
+    }
+}
+
+$card-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+$hover-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+.event-card {
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: $card-shadow;
+    transition:
+        transform 0.3s ease-in-out,
+        box-shadow 0.3s ease-in-out;
+
+    &:hover {
+        transform: translateY(-10px);
+        box-shadow: $hover-shadow;
+    }
+
+    .card-body {
+        padding: 20px;
+        text-align: center;
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: $dark-color;
+            text-decoration: none;
+            transition: color 0.3s ease-in-out;
 
             &:hover {
-                background-color: white;
-                color: #000;
-                transform: translateY(-3px);
+                color: darken($dark-color, 10%);
+            }
+        }
+        .d-flex {
+            align-items: center;
+
+            p {
+                font-size: 0.9rem;
+                color: $secondary-color;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
+
+            .badge {
+                font-size: 0.85rem;
+                font-weight: bold;
+                background-color: $success-color;
+                padding: 5px 10px;
+                border-radius: 5px;
             }
         }
     }

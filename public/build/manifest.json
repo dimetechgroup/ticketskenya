@@ -1,0 +1,77 @@
+{
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.ttf": {
+    "file": "assets/fa-brands-400-D1LuMI3I.ttf",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.ttf"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2": {
+    "file": "assets/fa-brands-400-D_cYUPeE.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.ttf": {
+    "file": "assets/fa-regular-400-DZaxPHgR.ttf",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.ttf"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff2": {
+    "file": "assets/fa-regular-400-BjRzuEpd.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff2"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.ttf": {
+    "file": "assets/fa-solid-900-D0aA9rwL.ttf",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.ttf"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2": {
+    "file": "assets/fa-solid-900-CTAAxXor.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.ttf": {
+    "file": "assets/fa-v4compatibility-CCth-dXg.ttf",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.ttf"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.woff2": {
+    "file": "assets/fa-v4compatibility-C9RhG_FT.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.woff2"
+  },
+  "public/images/hero-bg.jpg": {
+    "file": "assets/hero-bg-BjCHvp_a.jpg",
+    "src": "public/images/hero-bg.jpg"
+  },
+  "public/images/icon-color-box-bg01.svg": {
+    "file": "assets/icon-color-box-bg01-CZXTLdv9.svg",
+    "src": "public/images/icon-color-box-bg01.svg"
+  },
+  "public/images/why-us-bg.png": {
+    "file": "assets/why-us-bg-B9We9nhH.png",
+    "src": "public/images/why-us-bg.png"
+  },
+  "resources/js/app.ts": {
+    "file": "assets/app-C5oTkb0d.js",
+    "name": "app",
+    "src": "resources/js/app.ts",
+    "isEntry": true
+  },
+  "resources/scss/admin.scss": {
+    "file": "assets/admin-DKwcoh0Q.css",
+    "src": "resources/scss/admin.scss",
+    "isEntry": true
+  },
+  "resources/scss/app.scss": {
+    "file": "assets/app-VA4kgdGk.css",
+    "src": "resources/scss/app.scss",
+    "isEntry": true
+  },
+  "resources/scss/landingPage/app.scss": {
+    "file": "assets/app-ohNGT2vg.css",
+    "src": "resources/scss/landingPage/app.scss",
+    "isEntry": true
+  },
+  "resources/scss/landingPage/auth.scss": {
+    "file": "assets/auth-CkcPFg-2.css",
+    "src": "resources/scss/landingPage/auth.scss",
+    "isEntry": true
+  },
+  "resources/scss/landingPage/eventDetails.scss": {
+    "file": "assets/eventDetails-DxUEtVjM.css",
+    "src": "resources/scss/landingPage/eventDetails.scss",
+    "isEntry": true
+  }
+}

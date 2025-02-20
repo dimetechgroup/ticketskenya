@@ -10,8 +10,10 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\User;
 use App\Utilities\Constants;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -94,6 +96,7 @@ class EventController extends Controller
         $user           = User::find(Auth::id());
         $data           = $request->validated();
         $data['status'] = Constants::EVENT_STATUS_PENDING;
+        $data['slug'] =  Str::slug($data['name']);
         $data['image']  = Storage::disk(config('filesystems.default'))->put('events', $request->file('image'));
 
         $user->events()->create($data);
@@ -104,30 +107,41 @@ class EventController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Event $event)
+    public function show(string $slug)
     {
-        $event->load(['user:id,name,email,phone_number,role', 'tickets', 'orders'])
-            ->loadCount('tickets', 'orders');
+        $event = Event::where('slug', $slug)->with([
+            'user:id,name,email,phone_number,role',
+            'tickets',
+            'orders' => function ($query) {
+                $query->select('orders.order_number', 'orders.id', 'orders.total_amount', 'orders.payment_status', 'orders.ticket_id');
+            }
+        ])->firstOrFail();
 
-        $ticketsSold = OrderItem::whereHas('ticket', function ($query) use ($event) {
-            $query->where('event_id', $event->id);
-        })->sum('quantity');
+        // Calculate required metrics efficiently
+        $ordersIds = $event->orders->pluck('id');  // Using already loaded orders
 
-        $totalRevenue = Order::where('event_id', $event->id)
-            ->where('payment_status', 'successful')
+        $ticketsSold = $event->tickets->sum('sold_quantity');
+
+        $totalRevenue = $event->orders
+            ->where('payment_status', Constants::PAYMENT_STATUS_SUCCESSFUL)
             ->sum('total_amount');
 
-        $attendeesCheckedIn = OrderItem::whereHas('ticket', function ($query) use ($event) {
-            $query->where('event_id', $event->id);
-        })->whereNotNull('checkin_time')->count();
-        $totalAttendees =
-            OrderItem::whereHas('ticket', function ($query) use ($event) {
-                $query->where('event_id', $event->id);
-            })->count();
+        $attendeesCheckedIn = OrderItem::whereIn('order_id', $ordersIds)
+            ->whereNotNull('checkin_time')
+            ->count();
 
+        $totalAttendees = OrderItem::whereIn('order_id', $ordersIds)
+            ->count();
 
-        return view('admins.events.show', compact('event', 'ticketsSold', 'totalRevenue', 'attendeesCheckedIn', 'totalAttendees'));
+        return view('admins.events.show', compact(
+            'event',
+            'ticketsSold',
+            'totalRevenue',
+            'attendeesCheckedIn',
+            'totalAttendees'
+        ));
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -150,7 +164,7 @@ class EventController extends Controller
 
         $event->update($data);
 
-        return redirect()->route('events.show', $event->id)->with('success', 'Event updated successfully');
+        return redirect()->route('events.show', $event->slug)->with('success', 'Event updated successfully');
     }
 
     /**
@@ -169,12 +183,13 @@ class EventController extends Controller
         return redirect()->route('events.index')->with('success', 'Event deleted successfully');
     }
 
-    public function updateStatus(UpdateEventStatusRequest $request, Event $event)
+    public function updateStatus(UpdateEventStatusRequest $request, string $eventSlug)
     {
         $data = $request->validated();
+        $event = Event::where('slug', $eventSlug)->firstOrFail();
         $event->update($data);
 
-        return redirect()->route('events.show', $event->id)->with('success', 'Event status updated successfully');
+        return redirect()->route('events.show', $event->slug)->with('success', 'Event status updated successfully');
     }
 
     /***
@@ -182,23 +197,80 @@ class EventController extends Controller
      * @param Event $event
      *
      */
-    public function attendees(int $eventId): View
+    /**
+     * Display attendees for a specific event
+     *
+     * @param int $eventId
+     * @return \Illuminate\View\View
+     */
+    public function attendees(int $eventId)
     {
-        $event = Event::with([
-            'orders.orderItems.ticket',
-            'orders.orderItems.checkinBy'
-        ])->findOrFail($eventId);
+        $event = Event::findOrFail($eventId);
+        $tickets = $event->tickets()->with([
+            'orders' => function ($query) {
+                $query->with([
+                    'orderItems' => function ($query) {
+                        $query->select('id', 'order_id', 'ticket_id', 'attendee_name', 'attendee_email', 'attendee_phone', 'status', 'checkin_time');
+                    },
+                    'orderItems.ticket:id,name'
+                ])->select('id', 'order_number', 'payment_status');
+            }
+        ])->get();
 
-        return view('admins.events.attendees', compact('event'));
+        $orderItems = OrderItem::whereIn('ticket_id', $tickets->pluck('id'))->get();
+        $total_attendees = $orderItems->count();
+        $checkinCount = $orderItems->whereNotNull('checkin_time')->count();
+        $yetToCheckinCount = $total_attendees - $checkinCount;
+
+
+
+        return view('admins.events.attendees', compact('event', 'checkinCount', 'yetToCheckinCount', 'total_attendees'));
     }
-    public function checkInAttendee($id)
+
+    public function checkInAttendee(string $encodedOrderId)
     {
-        $attendee = OrderItem::findOrFail($id);
+        $orderId = decrypt($encodedOrderId);
+        $attendee = OrderItem::findOrFail($orderId);
+        $ticket = $attendee->ticket;
+        $event = $ticket->event;
+
+        if ($attendee->checkin_time) {
+            return $this->checkInResponse(false, 'Attendee has already been checked in', $attendee);
+        }
+
+        if ($ticket->order->payment_status == Constants::PAYMENT_STATUS_PENDING) {
+            return $this->checkInResponse(false, 'Attendee ticket has not been paid for', $attendee);
+        }
+
+        if ($event->status != Constants::EVENT_STATUS_APPROVED) {
+            return $this->checkInResponse(false, 'Event is not ongoing', $attendee);
+        }
+
+        if ($event->start_date > now()) {
+            return $this->checkInResponse(false, 'Event has not started yet', $attendee);
+        }
+
+        if ($event->end_date < now()) {
+            return $this->checkInResponse(false, 'Event has ended', $attendee);
+        }
+
+        // Perform check-in
         $attendee->update([
             'checkin_time' => now(),
-            'status' => 'used'
+            'checkin_by' => Auth::id()
         ]);
 
-        return response()->json(['success' => true]);
+        return $this->checkInResponse(true, 'Attendee ' . $attendee->attendee_name . ' checked in successfully', $attendee);
+    }
+
+    /**
+     * Helper function to return check-in response.
+     */
+    private function checkInResponse(bool $status, string $message, $attendee)
+    {
+        return view('admins.events.checkInResult', [
+            'attendee' => $attendee,
+            'result' => compact('status', 'message')
+        ]);
     }
 }

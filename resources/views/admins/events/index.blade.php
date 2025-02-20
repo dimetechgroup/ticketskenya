@@ -117,7 +117,7 @@
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>
-                                            <a href="{{ route('events.show', $event->id) }}"
+                                            <a href="{{ route('events.show', $event->slug) }}"
                                                 class="text text-primary fw-bold link-underline link-underline-opacity-0 link-underline-opacity-100-hove">
                                                 {{ $event->name }}
                                             </a>

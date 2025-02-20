@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Event extends Model
@@ -13,8 +14,12 @@ class Event extends Model
     /** @use HasFactory<\Database\Factories\EventFactory> */
     use HasFactory, SoftDeletes;
 
+    protected $table = 'events';
+    protected $primaryKey = 'id';
+
 
     protected $fillable = [
+        'slug',
         'name',
         'description',
         'venue',
@@ -39,6 +44,7 @@ class Event extends Model
         'status'     => 'string',
     ];
 
+
     // return event image url
     public function getImageUrlAttribute(): string
     {
@@ -54,8 +60,15 @@ class Event extends Model
         return $this->hasMany(Ticket::class);
     }
 
-    public function orders(): HasMany
+    public function orders(): HasManyThrough
     {
-        return $this->hasMany(Order::class);
+        return $this->hasManyThrough(
+            Order::class,
+            Ticket::class,
+            'event_id',
+            'ticket_id',
+            'id',
+            'id'
+        );
     }
 }

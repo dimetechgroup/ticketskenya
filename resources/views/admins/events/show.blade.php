@@ -1,3 +1,4 @@
+{{-- resources/views/admins/events/show.blade.php --}}
 @extends('layouts.app')
 
 @section('styles')
@@ -33,9 +34,11 @@
 @section('content')
     <div class="content">
         <div class="container-fluid">
-            <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex justify-content-between align-items-center pb-4">
                 <h4 class="page-title">Event Details</h4>
                 <div>
+                    <a href="{{ route('events.attendees', ['event' => $event]) }}" class="btn btn-primary">View All
+                        Attendees</a>
                     {{-- model to change ticket status --}}
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ststusChange">
@@ -52,7 +55,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
-                                <form action="{{ route('events.status', $event->id) }}" method="POST">
+                                <form action="{{ route('events.status', $event->slug) }}" method="POST">
                                     <div class="modal-body">
                                         {{--  --}}
 
@@ -128,7 +131,7 @@
                             </div>
                             <div class="col-6">
                                 <div class="card-statistics">
-                                    <h5>{{ $event->tickets->sum('available_qty') - $ticketsSold }}</h5>
+                                    <h5>{{ $event->tickets()->sum('quantity') - $ticketsSold }}</h5>
                                     <p>Tickets Left</p>
                                 </div>
                             </div>
@@ -146,7 +149,7 @@
                             </div>
                             <div class="col-12 mt-3">
                                 <div class="card-statistics">
-                                    <h5>${{ number_format($totalRevenue, 2) }}</h5>
+                                    <h5>{{ $event->currency . ' ' . number_format($totalRevenue, 2) }}</h5>
                                     <p>Total Revenue</p>
                                 </div>
                             </div>
@@ -207,8 +210,7 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between">
                             <h5>Orders</h5>
-                            <a href="{{ route('events.attendees', ['event' => $event]) }}" class="btn btn-primary">View All
-                                Attendees</a>
+
                         </div>
                         <div class="card-body">
 
@@ -217,7 +219,6 @@
                                     <tr>
                                         <th>order_number</th>
                                         <th>Total Amount</th>
-                                        <th>Currency</th>
                                         <th>Payment Status</th>
                                         <th>Tickets</th>
                                     </tr>
@@ -226,8 +227,7 @@
                                     @foreach ($event->orders as $order)
                                         <tr>
                                             <td>{{ $order->order_number }}</td>
-                                            <td>{{ $order->total_amount }}</td>
-                                            <td>{{ $order->currency }}</td>
+                                            <td>{{ $order->currency . ' ' . $order->total_amount }}</td>
                                             <td>{{ $order->payment_status }}</td>
                                             <td>
                                                 {{ $order->orderItems->count() }}

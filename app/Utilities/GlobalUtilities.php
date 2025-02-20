@@ -21,6 +21,11 @@ class GlobalUtilities
         return null; // Return null if file doesn't exist
     }
 
+    public static function getImageStoragePath($imagePath): string
+    {
+        return storage_path('app/public/' . $imagePath);
+    }
+
 
 
     /**
@@ -42,19 +47,6 @@ class GlobalUtilities
         } while ($exists);
         return $code;
     }
-
-    /**
-     * generate OrderNumber
-     * @return string
-     */
-    public static function generateOrderNumber(): string
-    {
-        return self::generateCode(Order::class, 'order_number', 'ORD');
-    }
-
-
-
-
 
 
     /**

@@ -11,13 +11,15 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    <title>{{ config('app.name', 'Welcome To Ticket Kenya') }}</title>
+    <title>@yield('title', config('app.name', 'Welcome To Ticket Kenya'))</title>
+
 
     @vite(['resources/scss/landingPage/app.scss', 'resources/js/app.ts'])
     @yield('styles')
 </head>
 
-<body>
+<body class="wrapper">
+    <x-messages />
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
@@ -41,10 +43,10 @@
                         <a class="nav-link" href="{{ url('/about') }}">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/contact') }}">Contact Us</a>
+                        <a class="nav-link" href="{{ url('/contact-us') }}">Contact Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-primary ms-2" href="{{ url('/login') }}">Add Event</a>
+                        <a class="btn btn-primary btn-custom-primary ms-2" href="{{ url('/login') }}">Add Event</a>
                     </li>
                 </ul>
             </div>
@@ -52,7 +54,7 @@
     </nav>
 
     <!-- Main Content -->
-    <main>
+    <main class="my-2">
         @yield('content')
     </main>
 

@@ -1,4 +1,4 @@
-<x-guest-layout>
+{{-- <x-guest-layout>
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
@@ -12,7 +12,7 @@
         <!-- Email Address -->
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
+            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="name" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
@@ -49,4 +49,109 @@
             </x-primary-button>
         </div>
     </form>
-</x-guest-layout>
+</x-guest-layout> --}}
+
+@extends('layouts.guest')
+
+@section('styles')
+    @vite(['resources/scss/landingPage/auth.scss'])
+@endsection
+
+@section('content')
+    <section class="vh-100" style="background-color: rgba(0,0,0,0.2);">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col col-xl-10">
+                    <div class="card" style="border-radius: 1rem;">
+                        <div class="row g-0">
+                            <div class="col-md-6 col-lg-5 d-none d-md-block">
+                                <img src="{{ asset('images/login.jpg') }}" alt="login form" class="img-fluid"
+                                    style="border-radius: 1rem 0 0 1rem; height: 100%;" />
+                            </div>
+                            <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                                <div class="card-body p-4 p-lg-5 text-black">
+
+                                    <form method="POST" action="{{ route('register') }}">
+                                        @csrf
+
+                                        <div class="d-flex align-items-center mb-3 pb-1 text-black">
+                                            <span class="h1 fw-bold mb-0">Tickets Kenya</span>
+                                        </div>
+
+                                        <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Create an Account
+                                        </h5>
+                                        <div class="d-flex justify-content-between">
+                                        <div data-mdb-input-init class="form-outline mb-4">
+                                            <label class="form-label" for="name">Name</label>
+                                            <input type="text" id="name" name="name"
+                                                class="form-control form-control-lg @error('name') is-invalid @enderror" />
+
+                                            @error('name')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <div data-mdb-input-init class="form-outline mb-4">
+                                            <label class="form-label" for="phone">Phone Number</label>
+                                            <input type="text" id="phone" name="phone"
+                                                class="form-control form-control-lg @error('phone') is-invalid @enderror" />
+
+                                            @error('phone')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        </div>
+
+
+                                        <div data-mdb-input-init class="form-outline mb-4">
+                                            <label class="form-label" for="email">Email address</label>
+                                            <input type="email" id="email" name="email"
+                                                class="form-control form-control-lg @error('email') is-invalid @enderror" />
+
+                                            @error('email')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                        <div data-mdb-input-init class="form-outline mb-4">
+                                            <label class="form-label" for="password">Password</label>
+                                            <input type="password" id="password" name="password"
+                                                class="form-control form-control-lg @error('password') is-invalid @enderror" />
+
+                                            @error('password')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+
+                                        <div data-mdb-input-init class="form-outline mb-4">
+                                            <label class="form-label" for="password_confirmation">Retype Password</label>
+                                            <input type="password" id="password_confirmation" name="password_confirmation"
+                                                class="form-control form-control-lg @error('retypepassword') is-invalid @enderror" />
+
+                                            @error('password_confirmation')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        </div>
+
+                                        <div class="pt-1 mb-4">
+                                            <button type="submit" class="btn btn-dark btn-lg btn-block"
+                                                type="button">Register</button>
+                                        </div>
+
+                                        <a class="small text-muted" href="{{ route('password.email') }}">Forgot
+                                            password?</a>
+                                        <p class="mb-5 pb-lg-2 text-black">Already have an account? <a
+                                                href="{{ route('login') }}" class="text text-muted">Login here</a></p>
+                                        <a href="#!" class="small text-muted">Terms of use.</a>
+                                        <a href="#!" class="small text-muted">Privacy policy</a>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+@endsection

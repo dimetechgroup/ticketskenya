@@ -10,6 +10,7 @@ export default defineConfig({
                 "resources/scss/landingPage/auth.scss",
                 "resources/js/app.ts",
                 "resources/scss/landingPage/app.scss",
+                "resources/scss/landingPage/eventDetails.scss",
             ],
             refresh: true,
         }),

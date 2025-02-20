@@ -22,7 +22,7 @@
                                         @csrf
 
                                         <div class="d-flex align-items-center mb-3 pb-1 text-black">
-                                            <span class="h1 fw-bold mb-0">Ticket Kenya</span>
+                                            <span class="h1 fw-bold mb-0">Tickets Kenya</span>
                                         </div>
 
                                         <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account
