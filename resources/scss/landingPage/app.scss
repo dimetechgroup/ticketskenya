@@ -5,7 +5,7 @@
 // Variables for colors and fonts
 $primary-color: #42a26c;
 $secondary-color: #dcdcdc;
-$hover-color: #ffba00;
+$hover-color: #164128;
 $dark-overlay: rgba(0, 0, 0, 0.6);
 $button-radius: 30px;
 $font-weight-bold: bold;
@@ -125,14 +125,14 @@ $bg-main: "../../../public/images/why-us-bg.png";
     width: 200px;
     height: 200px;
     border-radius: 50%;
-    background-color: #f5c43b;
+    background-color: $hover-color;
     position: absolute;
 }
 .small-circle {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background-color: #4caf50;
+    background-color: $primary-color;
     position: absolute;
     top: 75px;
     left: 75px;
@@ -188,7 +188,7 @@ $bg-main: "../../../public/images/why-us-bg.png";
     h6 {
         font-weight: bold;
         text-transform: uppercase;
-        color: #28a745;
+        color: $primary-color;
     }
 
     h1 {
@@ -316,7 +316,7 @@ $bg-main: "../../../public/images/why-us-bg.png";
     &.btn-primary {
         background-color: $primary-color;
         border: none;
-        color: #000;
+        color: white;
         font-weight: $font-weight-bold;
 
         &:hover {
