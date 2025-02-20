@@ -93,6 +93,7 @@ class EventController extends Controller
      */
     public function store(StoreEventRequest $request)
     {
+
         $user           = User::find(Auth::id());
         $data           = $request->validated();
         $data['status'] = Constants::EVENT_STATUS_PENDING;

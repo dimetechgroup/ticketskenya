@@ -21,7 +21,7 @@
                                 <div class="col-7 d-flex align-items-center">
                                     <div class="numbers">
                                         <p class="card-category">Active Events</p>
-                                        <h4 class="card-title">1,294</h4>
+                                        <h4 class="card-title">{{ $events->where('status', 'approved')->count() }}</h4>
                                     </div>
                                 </div>
                             </div>
@@ -40,7 +40,7 @@
                                 <div class="col-7 d-flex align-items-center">
                                     <div class="numbers">
                                         <p class="card-category">Tickets Sold</p>
-                                        <h4 class="card-title">$ 1,345</h4>
+                                        <h4 class="card-title">{{ $tickets->where('status', 'sold')->count() }}</h4>
                                     </div>
                                 </div>
                             </div>
@@ -59,7 +59,7 @@
                                 <div class="col-7 d-flex align-items-center">
                                     <div class="numbers">
                                         <p class="card-category">Sales</p>
-                                        <h4 class="card-title">1303</h4>
+                                        <h4 class="card-title">{{$sales}}</h4>
                                     </div>
                                 </div>
                             </div>
@@ -78,7 +78,7 @@
                                 <div class="col-7 d-flex align-items-center">
                                     <div class="numbers">
                                         <p class="card-category">Users</p>
-                                        <h4 class="card-title">576</h4>
+                                        <h4 class="card-title">{{ $users->count() }}</h4>
                                     </div>
                                 </div>
                             </div>
@@ -127,29 +127,26 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">First</th>
-                                        <th scope="col">Last</th>
-                                        <th scope="col">Handle</th>
+                                        <th scope="col">Event Name</th>
+                                        <th scope="col">Event Organizer</th>
+                                        <th scope="col">Start Date</th>
+                                        <th scope="col">End Date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Jacob</td>
-                                        <td>Thornton</td>
-                                        <td>@fat</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td colspan="2">Larry the Bird</td>
-                                        <td>@twitter</td>
-                                    </tr>
+                                    @forelse ($events->take(8) as $index => $event)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $event->name }}</td>
+                                            <td>{{ $event->user->name }}</td>
+                                            <td>{{ $event->start_date }}</td>
+                                            <td>{{ $event->end_date }}</td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="4">No events found</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>

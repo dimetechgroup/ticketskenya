@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
     {
         $adminData = [
             'name' => 'Super Admin',
-            'email' => 'admin@ticketkenya.com',
+            'email' => 'admin@ticketskenya.com',
             'password' => bcrypt('Dimetech@2025'),
             'role' => 'admin',
             'phone_number' => '254708178500',
