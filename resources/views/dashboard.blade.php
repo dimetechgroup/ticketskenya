@@ -159,21 +159,21 @@
                    </div> -->
         </div>
         <div class="row">
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Task</h4>
-                        <p class="card-category">Complete</p>
-                    </div>
-                    <div class="card-body">
-                        <div id="task-complete" class="chart-circle mt-4 mb-3"></div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="legend"><i class="la la-circle text-primary"></i> Completed</div>
+
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Users Statistics</h4>
+                            <p class="card-category">
+                                Users statistics this month</p>
+                        </div>
+                        <div class="card-body">
+                            <div id="monthlyChart" class="chart chart-pie"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-9">
+
+            <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title">World Map</h4>
@@ -188,7 +188,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> </div>
         </div>
         <div class="row row-card-no-pd">
             <div class="col-md-4">
