@@ -1,0 +1,56 @@
+/* Style the CAPTCHA container */
+.captcha {
+    font-family: "Courier New", Courier, monospace;
+    /* Mimic a typewriter or digital font */
+    font-weight: bold;
+    font-size: 24px;
+    color: #4caf50;
+    /* Use a color for the text (you can change this) */
+    background: #f0f0f0;
+    /* Light gray background for better visibility */
+    padding: 10px;
+    border-radius: 5px;
+    letter-spacing: 2px;
+    /* Add spacing between letters for effect */
+    text-transform: uppercase;
+    /* Make letters uppercase */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Add shadow for a 3D effect */
+    display: inline-block;
+}
+
+/* Add some noise effect to the CAPTCHA container (create a 'noisy' background) */
+.captcha {
+    background-image: linear-gradient(
+            45deg,
+            rgba(0, 0, 0, 0.1) 25%,
+            transparent 25%
+        ),
+        linear-gradient(-45deg, rgba(0, 0, 0, 0.1) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(0, 0, 0, 0.1) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(0, 0, 0, 0.1) 75%);
+    background-size: 10px 10px;
+    background-position: 0 0, 0 5px, 5px 5px, 5px 0;
+}
+
+/* Style the CAPTCHA input field */
+#captcha {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 18px;
+    padding: 8px;
+    margin-top: 5px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    width: 200px;
+    /* Adjust width as needed */
+}
+
+/* Style the label to make the CAPTCHA section clearer */
+label[for="captcha"] {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #333;
+}

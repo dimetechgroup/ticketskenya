@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TicketPurchaserequest;
 use App\Http\Services\PayStackService;
+use App\Mail\ContactUsMail;
 use App\Models\Event;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -15,7 +16,9 @@ use Da\QrCode\QrCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class PageController extends Controller
@@ -163,5 +166,45 @@ class PageController extends Controller
 
         $fileName = $orderItem->order->order_number . '-' . $orderItem->id;
         return $this->downloadPDF($view, $fileName);
+    }
+
+    public function aboutUs(): View
+    {
+        return view('websites.about-us');
+    }
+
+    public function contactUs(): View
+    {
+        // generate captcha with 4 digits : numeric, letters
+        // store in session
+        $captcha = Str::upper(Str::random(4));
+        session(['captcha' => $captcha]);
+
+        return view('websites.contact-us', compact('captcha'));
+    }
+
+    public function sendContactUsMessage(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:100',
+            'email' => 'required|email|max:100',
+            'phone_number' => 'required|string|max:15',
+            'message' => 'required|string|max:500',
+            'captcha' => 'required|in:' . session('captcha')
+
+
+        ]);
+        // validate captcha is correct
+        dd($data);
+
+
+
+        // send email
+        Mail::to(env('MAIL_FROM_ADDRESS'))->send(new ContactUsMail($data));
+
+        // Clear the CAPTCHA session after use
+        session()->forget('captcha');
+
+        return redirect()->back()->with('success', 'Message sent successfully');
     }
 }

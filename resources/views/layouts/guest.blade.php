@@ -40,7 +40,7 @@
                         <a class="nav-link" href="{{ url('/events') }}">Browse Events</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/about') }}">About Us</a>
+                        <a class="nav-link" href="{{ route('landing.aboutUs') }}">About Us</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/contact-us') }}">Contact Us</a>

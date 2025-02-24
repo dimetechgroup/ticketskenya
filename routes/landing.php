@@ -11,3 +11,9 @@ Route::post('/event/ticket/{ticket}/purchase', [PageController::class, 'purchase
 Route::get('sucessful-payment', [PageController::class, 'successfulPayment'])->name('successful.payment');
 // download attendee ticket
 Route::get('/ticket/{ticket}/download', [PageController::class, 'downloadTicket'])->name('attendees.download-ticket');
+Route::get('about-us', [PageController::class, 'aboutUs'])->name('landing.aboutUs');
+Route::get('contact-us', [PageController::class, 'contactUs'])->name('landing.contactUs');
+Route::post('contact-us', [PageController::class, 'sendContactUsMessage'])->name('landing.contactUs.send');
+
+// Route::get('terms-and-conditions', [PageController::class, 'termsAndConditions'])->name('landing.termsAndConditions');
+// Route::get('privacy-policy', [PageController::class, 'privacyPolicy'])->name('landing.privacyPolicy');
