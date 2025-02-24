@@ -189,15 +189,12 @@ class PageController extends Controller
             'name' => 'required|string|max:100',
             'email' => 'required|email|max:100',
             'phone_number' => 'required|string|max:15',
+            'subject' => 'required|string|max:100',
             'message' => 'required|string|max:500',
             'captcha' => 'required|in:' . session('captcha')
 
 
         ]);
-        // validate captcha is correct
-        dd($data);
-
-
 
         // send email
         Mail::to(env('MAIL_FROM_ADDRESS'))->send(new ContactUsMail($data));
